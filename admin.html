@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+            integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <header class="text-center py-3 bg-dark text-light display-4 rounded-pill">
+                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                ADMIN
+            </header>
+            <!--Management section-->
+            <div class="container mt-5">
+                <h2 class="text-center pb-5">MANAGEMENT</h2>
+                <ul class="nav nav-pills mb-3 justify-content-around" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="product-management-tab" data-bs-toggle="pill"
+                            data-bs-target="#product-management" type="button" role="tab"
+                            aria-controls="product-management" aria-selected="true" style="font-size:20px">
+                            Quản lý sản phẩm
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="customer-management-tab" data-bs-toggle="pill"
+                            data-bs-target="#customer-management" type="button" role="tab"
+                            aria-controls="customer-management" aria-selected="false" style="font-size:20px">
+                            Quản lý khách hàng
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="bill-management-tab" data-bs-toggle="pill"
+                            data-bs-target="#bill-management" type="button" role="tab"
+                            aria-controls="bill-management" aria-selected="false" style="font-size:20px">
+                            Quản lý đơn hàng
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="coupon-management-tab" data-bs-toggle="pill"
+                            data-bs-target="#coupon-management" type="button" role="tab"
+                            aria-controls="coupon-management" aria-selected="false" style="font-size:20px">
+                            Quản lý mã giảm giá
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content border border-2 border-dark mt-4">
+                    <div class="tab-pane fade show active" id="product-management" role="tabpanel"
+                        aria-labelledby="product-management-tab">
+                        <div class="text-end my-2 me-3">
+                            <button class="btn btn-primary p2-5" data-bs-toggle="modal" data-bs-target="#product__modal"
+                                onclick="createProduct()">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                Tạo sản phẩm mới
+                            </button>
+                        </div>
+                        <div class="overflow-scroll" style="height:500px">
+                            <table class="table text-center align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Tên SP</th>
+                                        <th scope="col">Ảnh</th>
+                                        <th scope="col">Giá</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="product-tbl-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="customer-management" role="tabpanel"
+                        aria-labelledby="customer-management-tab">
+                        <div class="overflow-scroll" style="height:500px">
+                            <table class="table text-center align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Tên khách hàng</th>
+                                        <th scope="col">Tên đăng nhập</th>
+                                        <th scope="col">Mật khẩu</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customer-tbl-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="bill-management" role="tabpanel"
+                        aria-labelledby="bill-management-tab">
+                        <div class="overflow-scroll" style="height:500px">
+                            <table class="table text-center align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">Mã đơn hàng</th>
+                                        <th scope="col">Mã khách hàng</th>
+                                        <th scope="col">Coupon</th>
+                                        <th scope="col">Giảm giá</th>
+                                        <th scope="col">Tổng cộng</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bill-tbl-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="coupon-management" role="tabpanel"
+                        aria-labelledby="coupon-management-tab">
+                        <div class="text-end my-2 me-3">
+                            <button class="btn btn-primary px-5" data-bs-toggle="modal" data-bs-target="#coupon__modal">
+                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                Tạo mã giảm giá
+                            </button>
+                        </div>
+                        <div class="overflow-scroll" style="height:500px">
+                            <table class="table text-center">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col">Mã Coupon</th>
+                                        <th scope="col">Giá trị</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="coupon-tbl-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Statistic section-->
+            <div class="container my-5">
+                <h2 class="text-center pb-5">STATISTIC</h2>
+                <div class="row align-items-center">
+                    <div class="col-6" id="product-statistic" onmouseover="">
+                        <div class="card" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="img/product-icon.png" class="img-fluid rounded-start">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h3 class="card-title text-center">Product Statistic</h3>
+                                        <p class="card-text text-center"  style="font-size: 1.5rem;">
+                                            Total: <span id="product-data"></span> products.
+                                         </p>
+                                        <p class="card-text text-center"><small class="text-muted" id="product-updated-time"></small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <canvas id='product-canvas'></canvas>
+                    </div>
+                </div>
+                <div class="row align-items-center mt-3">
+                    <div class="col-6" id="customer-statistic" onmouseover="">
+                        <div class="card" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="img/customer-icon.png" class="img-fluid rounded-start">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h3 class="card-title text-center">Customer Statistic</h3>
+                                        <p class="card-text text-center" style="font-size: 1.5rem;">
+                                            Total: <span  id="customer-data"></span> customers.
+                                        </p>
+                                        <p class="card-text text-center"><small class="text-muted" id="customer-updated-time"></small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <canvas id='customer-canvas'></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--modal-->
+        <!--modal sửa thông tin sản phẩm-->
+        <div class="modal fade" id="product__modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="text-center py-2 mb-4">
+                        <h5 class="modal-title" id="product-title"></h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <label class="col-4 text-end fw-bold" for="new-productName">Tên sản phẩm:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="new-productName"
+                                    placeholder="Nhập tên sản phẩm">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end fw-bold" for="new-productCate">Danh mục sản phẩm:</label>
+                            <div class="col-8">
+                                <select class="form-control" id="new-productCate">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end fw-bold" for="new-productImgLink">Link ảnh:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="new-productImgLink" onmouseover="preview()"
+                                    onmouseout="hideEle($('preview'))" placeholder="Nhập link ảnh sản phẩm">
+                            </div>
+                        </div>
+                        <div class="row justify-content-around mt-3 position-absolute visually-hidden" id="preview"
+                            style="top:7rem;right:-8rem">
+                            <img src="" class="img-fluid" id="preview-img" style="width:150px">
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end fw-bold" for="new-productName">Giá:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="new-productPrice"
+                                    placeholder="Nhập giá sản phẩm">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end fw-bold" for="new-productDes">Mô tả sản phẩm:</label>
+                            <div class="col-8">
+                                <textarea class="form-control" rows="3" id="new-productDes"
+                                    placeholder="Mô tả sản phẩm"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end fw-bold" for="new-productVotes">Đánh giá:</label>
+                            <div class="col-8">
+                                <select type="text" class="form-control" id="new-productVotes">
+                                    <option value="1">1 sao</option>
+                                    <option value="2">2 sao</option>
+                                    <option value="3">3 sao</option>
+                                    <option value="4">4 sao</option>
+                                    <option value="5">5 sao</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end fw-bold" for="new-productBrand">Thương hiệu:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="new-productBrand"
+                                    placeholder="Nhập thương hiệu">
+                            </div>
+                        </div>
+                        <div id="blank-error-createProduct" class="text-danger text-center visually-hidden mt-3">
+                            Vui lòng điền đủ thông tin!
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Hủy</button>
+                        <button class="btn btn-primary px-5" type="button" id="save-product__btn">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal sửa khách hàng -->
+        <div class="modal fade" id="customer__modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="text-center py-2">
+                        <h5 class="modal-title" id="customer-title">Xem Thông Tin Khách Hàng</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="shown-cusName">Tên khách hàng:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="shown-cusName" disabled>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="shown-phoneNumber">Số điện thoại:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="shown-phoneNumber" disabled>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="shown-address">Địa chỉ:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="shown-address" disabled>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="shown-email">Email:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="shown-email" disabled>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="shown-userName">Tên đăng nhập:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="shown-userName" disabled>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="shown-date">Ngày đăng ký:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="shown-date" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Modal chi tiết bill-->
+        <div class="modal fade" id="bill__modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" style="height:600px">
+                <div class="modal-content">
+                    <div class="text-center py-2">
+                        <h4 class="modal-title">Chi Tiết Đơn Hàng</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row justify-content-center">
+                            <div class="w-75">
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-cusName">Tên khách hàng:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-cusName" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-userName">Tên đăng nhập:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-userName" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-phoneNumber">Số điện thoại:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-phoneNumber" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-address">Địa chỉ:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-address" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-email">Email:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-email" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-date">Ngày xuất hóa đơn:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-date" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-coupon">Mã giảm giá:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-coupon" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-total">Thành tiền:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-total" disabled>
+                                    </div>
+                                </div>
+                                <table class="table align-middle text-align mt-5">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">Tên sản phẩm</th>
+                                            <th scope="col">Số lượng</th>
+                                            <th scope="col">Đơn giá</th>
+                                            <th scope="col">Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="detailBill-tbl-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở về</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--modal coupon -->
+        <div class="modal fade" id="coupon__modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="text-center py-2">
+                        <h5 class="modal-title">Tạo Mới Mã Giảm Giá</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="row mt-3">
+                                <label class="col-4 text-end" for="new-code">Mã:</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="new-code">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <label class="col-4 text-end" for="new-value">% Giảm giá:</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="new-value">
+                                </div>
+                            </div>
+                            <div id="blank-error-createCoupon" class="text-danger text-center visually-hidden mt-3">
+                                Vui lòng điền đủ thông tin!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-primary px-5" onclick="createCoupon()">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/ConnectAPI.js"></script>
+        <script src="js/Libs.js"></script>
+        <script src="js/Admin.js"></script>
+        <script src="js/Statistic.js"></script>
+    </body>
+
+</html>

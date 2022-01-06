@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Coffee House</title>
+        <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+            integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
+            integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://smtpjs.com/v3/smtp.js"></script>
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.1.5/html2canvas.js"
+            integrity="sha512-cqEHlkERKpEPV9WFiByrBe8lBmGErGBj8RryppKDhtLnpOHyOWHGf7P40BpNnjrzZDJ3qdFZi2Fw6YrIhITM3A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.0/html2pdf.bundle.min.js"
+            integrity="sha512-YLG3N5dufxTTEyEgDIKb3IMDTz/NsWiGH6+6OvzrJBu/XZNRiZb9UxuNoMn8RdTtuKgpjtzTeWm/ITkZkj2i3Q=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <header id="header">
+                <div class="section_slider">
+                    <div id="bg-slide" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="img/slider_1.jpg" class="d-block w-100 h-auto" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="img/slider_1.jpg" class="d-block w-100 h-auto" alt="...">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#bg-slide"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#bg-slide"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="header d-flex flex-column">
+                        <div class="container">
+                            <div class="row">
+                                <h5 class="col-6 text-center mt-2">Chào mừng bạn đến với Coffee House!</h5>
+                                <div class="col-3"></div>
+                                <div class="col-2 text-center mt-2">
+                                    <a class="btn active" id="link-login" role="button" data-bs-toggle="modal"
+                                        data-bs-target="#sign-in-up-form__modal">
+                                        <i class="fa fa-user mr-2" aria-hidden="true"></i>
+                                        Đăng Nhập/ Đăng ký
+                                    </a>
+                                    <div class="dropdown visually-hidden" id="manage-account">
+                                        <a class="btn dropdown-toggle" role="button" id="accDropdown"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="accDropdown">
+                                            <li><a class="dropdown-item" role="button" data-bs-toggle="modal"
+                                                    data-bs-target="#history__modal">
+                                                    Lịch sử mua hàng
+                                                </a>
+                                            </li>
+                                            <li><a class="dropdown-item" role="button" data-bs-toggle="modal"
+                                                    data-bs-target="#edit-info__modal" onclick='showInfo()'>Chỉnh sửa
+                                                    thông tin</a>
+                                            </li>
+                                            <li><a class="dropdown-item" role="button" data-bs-toggle="modal"
+                                                    data-bs-target="#change-password__modal">Đổi mật khẩu</a>
+                                            </li>
+                                            <li><a class="dropdown-item" role="button" onclick='logout()'>Đăng xuất</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <nav class="navbar navbar-dark w-75 align-self-center text-center">
+                            <div class="nav-item logo-center py-3">
+                                <a href="index.html" class="nav-link">
+                                    <img src="img/logo.png" alt="" class="img-fluid" width="75%" height="75%">
+                                </a>
+                            </div>
+                            <ul class="left-nav d-flex flex-row align-items-center mb-0">
+                                <li class="nav-item">
+                                    <a href="index.html" class="nav-link text-light">Trang chủ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="index.html" class="nav-link text-light">Giới thiệu</a>
+                                </li>
+                                <li class="nav-item position-relative products">
+                                    <a href="index.html" class="nav-link text-light">
+                                        Sản phẩm
+                                        <i class="fas fa-sort-down" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="position-absolute product-types">
+                                        <ul class="list-unstyled text-start text-nowrap bg-light p-3">
+                                            <li><a href="">Cà phê thế giới</a></li>
+                                            <hr>
+                                            <li><a href="">Cà phê pha Việt</a></li>
+                                            <hr>
+                                            <li><a href="">Cà phê cảm hứng</a></li>
+                                            <hr>
+                                            <li><a href="">Đồ uống</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="index.html" class="nav-link text-light">Dịch vụ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="index.html" class="nav-link text-light">Tin tức</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="contact.html" class="nav-link text-light">Liên hệ</a>
+                                </li>
+                            </ul>
+                            <div class="cartgroup d-flex flex-row align-items-center">
+                                <form action="">
+                                    <input class="lg-hidden" type="text" name="" id="" placeholder="Tìm kiếm...">
+                                    <button type="submit" class="btn"><i class="fa fa-search"
+                                            aria-hidden="true"></i></button>
+                                </form>
+                                <span>|</span>
+                                <a class="position-relative" role="button" data-bs-toggle="modal"
+                                    data-bs-target="#cart-table__modal">
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                        id="num-products-in-cart">0</span>
+                                </a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <div class="section_about pt-5">
+                <div class="row align-items-center">
+                    <div class="col-sm-12 col-md-5 text-center">
+                        <h2 class="large-title">CHÚNG TÔI LÀ</h3>
+                            <h3 class="small-title">Coffee House</h3>
+                            <div class="date-time">
+                                Thứ Hai đến Chủ Nhật:
+                                <b>8:30 am - 11:00 pm</b> |
+                                Hotline:
+                                <a href="tel:19006750"><b>19006750</b></a>
+                                <hr>
+                            </div>
+                            Chúng tôi đi khắp thế giới để tìm kiếm cà phê tuyệt vời. Trong quá trình đó, chúng tôi phát
+                            hiện ra những hạt đậu đặc biệt và hiếm đến nỗi chúng tôi có thể chờ đợi để mang chúng về.
+                    </div>
+                    <img class="col-sm-12 col-md-7 pt-sm-5 img-fluid" src="img/bg_about.png">
+                </div>
+            </div>
+            <div class="section_menu_today text-center py-5">
+                <div class="container">
+                    <h2 class="large-title">MENU HÔM NAY</h2>
+                    <h3 class="small-title">Xem menu hôm nay</h3>
+                    <div class="menu-content mt-5">
+                        <ul class="nav nav-pills nav-menu justify-content-evenly mb-3" id="pills-tab" role="tablist">
+                            <li role="presentation">
+                                <button class="btn-menu active" id="pills-world-coffee-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-world-coffee" type="button" role="tab"
+                                    aria-controls="pills-world-coffee" aria-selected="true">Cà phê thế giới</button>
+                            </li>
+                            <li role="presentation">
+                                <button class="btn-menu" id="pills-Viet-coffee-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-Viet-coffee" type="button" role="tab"
+                                    aria-controls="pills-Viet-coffee" aria-selected="false">Cà phê pha Việt</button>
+                            </li>
+                            <li role="presentation">
+                                <button class="btn-menu" id="pills-inspration-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-inspiration" type="button" role="tab"
+                                    aria-controls="pills-inspiration" aria-selected="false">Cà phê cảm hứng</button>
+                            </li>
+                            <li role="presentation">
+                                <button class="btn-menu" id="pills-drinks-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-drinks" type="button" role="tab" aria-controls="pills-drinks"
+                                    aria-selected="false">Đồ uống có cồn</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="menu-tabContent">
+                            <div class="tab-pane fade show active" id="pills-world-coffee" role="tabpanel"
+                                aria-labelledby="pills-world-coffee-tab">
+                                <div class="menu">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-Viet-coffee" role="tabpanel"
+                                aria-labelledby="pills-Viet-coffee-tab">
+                                <div class="menu">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-inspiration" role="tabpanel"
+                                aria-labelledby="pills-inspiration-tab">
+                                <div class="menu">
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-drinks" role="tabpanel"
+                                aria-labelledby="pills-drinks-tab">
+                                <div class="menu">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-see-more">
+                    <a href="">
+                        Xem thêm
+                        <i class="fas fa-caret-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="section_gallery my-5">
+                <h2 class="large-title text-center">HÌNH ẢNH QUÁN CAFE</h2>
+                <div class="gallery mt-5">
+                    <div class="row row-cols-md-2 row-cols-1 text-center">
+                        <img src="img/gallery_big.jpg" alt="" class="col-md-6 col-12 img-fluid">
+                        <div class="col-md-6 col-12 mt-md-4 mt-lg-0">
+                            <div class="row">
+                                <img src="img/gallery_1.jpg" alt="" class="col-6 img-fluid">
+                                <img src="img/gallery_2.jpg" alt="" class="col-6 img-fluid">
+                            </div>
+                            <div class="row mt-4">
+                                <img src="img/gallery_3.jpg" alt="" class="col-6 img-fluid">
+                                <img src="img/gallery_4.jpg" alt="" class="col-6 img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section_review my-5">
+                <h2 class="large-title text-center mb-5">KHÁCH HÀNG NÓI GÌ</h2>
+                <div class="container">
+                    <div class="swiper review-swiper">
+                        <div class="swiper-pagination"></div>
+                        <br><br>
+                        <hr>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <p class="text-center mt-2">
+                                    <img src="img/image_1.jpg" alt="" class="customer-picture rounded-circle img-fluid">
+                                    <br>
+                                    <b>Ms.Phương Chi</b>
+                                    <br><br>
+                                    Tôi rất hài lòng về thái độ phục vụ của quán, cafe đa dạng, bánh ngon và không gian
+                                    rất đẹp, mình thích sống ảo nên tại đây mình có thể chụp được những tấm ảnh đẹp cùng
+                                    bạn bè, để hẹn hò cũng rất lãng mạn.
+                                </p>
+                            </div>
+                            <div class="swiper-slide">
+                                <p class="text-center mt-2">
+                                    <img src="img/image_1.jpg" alt="" class="customer-picture rounded-circle img-fluid">
+                                    <br>
+                                    <b>Ms.Phương Chi</b>
+                                    <br><br>
+                                    Tôi rất hài lòng về thái độ phục vụ của quán, cafe đa dạng, bánh ngon và không gian
+                                    rất đẹp, mình thích sống ảo nên tại đây mình có thể chụp được những tấm ảnh đẹp cùng
+                                    bạn bè, để hẹn hò cũng rất lãng mạn.
+                                </p>
+                            </div>
+                            <div class="swiper-slide">
+                                <p class="text-center mt-2">
+                                    <img src="img/image_1.jpg" alt="" class="customer-picture rounded-circle img-fluid">
+                                    <br>
+                                    <b>Ms.Phương Chi</b>
+                                    <br><br>
+                                    Tôi rất hài lòng về thái độ phục vụ của quán, cafe đa dạng, bánh ngon và không gian
+                                    rất đẹp, mình thích sống ảo nên tại đây mình có thể chụp được những tấm ảnh đẹp cùng
+                                    bạn bè, để hẹn hò cũng rất lãng mạn.
+                                </p>
+                            </div>
+                            <div class="swiper-slide">
+                                <p class="text-center mt-2">
+                                    <img src="img/image_1.jpg" alt="" class="customer-picture rounded-circle img-fluid">
+                                    <br>
+                                    <b>Ms.Phương Chi</b>
+                                    <br><br>
+                                    Tôi rất hài lòng về thái độ phục vụ của quán, cafe đa dạng, bánh ngon và không gian
+                                    rất đẹp, mình thích sống ảo nên tại đây mình có thể chụp được những tấm ảnh đẹp cùng
+                                    bạn bè, để hẹn hò cũng rất lãng mạn.
+                                </p>
+                            </div>
+                            <div class="swiper-slide">
+                                <p class="text-center mt-2">
+                                    <img src="img/image_1.jpg" alt="" class="customer-picture rounded-circle img-fluid">
+                                    <br>
+                                    <b>Ms.Phương Chi</b>
+                                    <br><br>
+                                    Tôi rất hài lòng về thái độ phục vụ của quán, cafe đa dạng, bánh ngon và không gian
+                                    rất đẹp, mình thích sống ảo nên tại đây mình có thể chụp được những tấm ảnh đẹp cùng
+                                    bạn bè, để hẹn hò cũng rất lãng mạn.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section_hours_book my-5">
+                <div class="container px-5">
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="col-12 col-md-5 text-center mt-5">
+                            <h2 class="large-title">GIỜ MỞ CỬA</h2>
+                            <p>
+                                Thứ 2 - Thứ 6 hàng tuần<br>
+                                7am - 11am<br>
+                                11am - 10pm<br>
+                                <br>
+                                Thứ 7, Chủ nhật hàng tuần<br>
+                                8am - 1 am<br>
+                                11am - 9pm
+                            </p>
+                            <hr>
+                            Số điện thoại<br>
+                            <a class="large-title display-5" href="tel:0987654253">0987654253</a>
+                        </div>
+                        <div class="col-12 col-md-7 position-relative">
+                            <button class="btn btn-outline-warning border-2 position-absolute" type="button"
+                                style="right:5rem;bottom:3rem;font-weight:700;font-size:1.3rem">
+                                Đặt bàn ngay
+                            </button>
+                            <img src="img/banner-hours-book.png" alt="" class="img-fluid mt-3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section_news my-5">
+                <h2 class="large-title text-center mb-5">TIN TỨC</h2>
+                <div class="container">
+                    <div class="swiper news-swiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="card mb-3 me-3">
+                                    <div class="row g-0">
+                                        <div class="col-md-5">
+                                            <img src="img/pexels-photo-374885.jpeg" class="img-fluid rounded-start mt-2"
+                                                alt="...">
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="card-body">
+                                                <p class="card-text">
+                                                    <small class="text-muted">
+                                                        <i class="fa fa-calendar text-warning" aria-hidden="true"></i>
+                                                        28/11/2021
+                                                    </small>
+                                                </p>
+                                                <h4 class="card-title">Bloomberg: Xuất khẩu cà phê lớn thứ hai Việt Nam
+                                                </h4>
+                                                <p class="card-text">
+                                                    <small>Tình trạng biến đổi khí hậu đang trở thành vấn đề nan giải,
+                                                        ngày
+                                                        càng ảnh hưởng rõ nét.</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-3">
+                                    <div class="row g-0">
+                                        <div class="col-md-5">
+                                            <img src="img/pexels-photo-374885.jpeg" class="img-fluid rounded-start mt-2"
+                                                alt="...">
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="card-body">
+                                                <p class="card-text">
+                                                    <small class="text-muted">
+                                                        <i class="fa fa-calendar text-warning" aria-hidden="true"></i>
+                                                        28/11/2021
+                                                    </small>
+                                                </p>
+                                                <h4 class="card-title">Bloomberg: Xuất khẩu cà phê lớn thứ hai Việt Nam
+                                                </h4>
+                                                <p class="card-text">
+                                                    <small>Tình trạng biến đổi khí hậu đang trở thành vấn đề nan giải,
+                                                        ngày
+                                                        càng ảnh hưởng rõ nét.</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="card mb-3 me-3">
+                                    <div class="row g-0">
+                                        <div class="col-md-5">
+                                            <img src="img/pexels-photo-374885.jpeg" class="img-fluid rounded-start mt-2"
+                                                alt="...">
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="card-body">
+                                                <p class="card-text">
+                                                    <small class="text-muted">
+                                                        <i class="fa fa-calendar text-warning" aria-hidden="true"></i>
+                                                        28/11/2021
+                                                    </small>
+                                                </p>
+                                                <h4 class="card-title">Bloomberg: Xuất khẩu cà phê lớn thứ hai Việt Nam
+                                                </h4>
+                                                <p class="card-text">
+                                                    <small>Tình trạng biến đổi khí hậu đang trở thành vấn đề nan giải,
+                                                        ngày
+                                                        càng ảnh hưởng rõ nét.</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-3">
+                                    <div class="row g-0">
+                                        <div class="col-md-5">
+                                            <img src="img/pexels-photo-374885.jpeg" class="img-fluid rounded-start mt-2"
+                                                alt="...">
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="card-body">
+                                                <p class="card-text">
+                                                    <small class="text-muted">
+                                                        <i class="fa fa-calendar text-warning" aria-hidden="true"></i>
+                                                        28/11/2021
+                                                    </small>
+                                                </p>
+                                                <h4 class="card-title">Bloomberg: Xuất khẩu cà phê lớn thứ hai Việt Nam
+                                                </h4>
+                                                <p class="card-text">
+                                                    <small>Tình trạng biến đổi khí hậu đang trở thành vấn đề nan giải,
+                                                        ngày
+                                                        càng ảnh hưởng rõ nét.</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination position-static"></div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <footer class="pb-5">
+                <div class="container">
+                    <div class="section_services my-5">
+                        <div class="row row-cols-1 row-cols-md-3 justify-content-around">
+                            <div class="col-12 col-md-3">
+                                <div class="row align-items-center">
+                                    <img src="img/service_1.png" alt="" class="col-4"
+                                        style="width:100px; height:auto; ">
+                                    <div class="col-8">
+                                        Coffee chất lượng<br>
+                                        hàng đầu châu Âu.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <div class="row align-items-center">
+                                    <img src="img/service_2.png" alt="" class="col-4"
+                                        style="width:100px; height:auto; ">
+                                    <div class="col-8">
+                                        Coffee chất lượng<br>
+                                        hàng đầu châu Âu.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <div class="row align-items-center">
+                                    <img src="img/service_3.png" alt="" class="col-4"
+                                        style="width:100px; height:auto; ">
+                                    <div class="col-8">
+                                        Coffee chất lượng<br>
+                                        hàng đầu châu Âu.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section_bottom_footer" style="margin-top: 8rem;">
+                        <div class="row row-cols-1 row-cols-lg-2">
+                            <div class="col-12 col-lg-5 me-5">
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245368.2610478176!2d107.93804181849794!3d16.07176349403613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314219c792252a13%3A0x1df0cb4b86727e06!2sDa%20Nang%2C%20Vietnam!5e0!3m2!1sen!2sus!4v1638092429514!5m2!1sen!2sus"
+                                    height="100%" width="100%" style="border:1px;" allowfullscreen=""
+                                    loading="lazy"></iframe>
+                            </div>
+                            <div class="col-12 col-lg-6 text-light">
+                                <h5>CHÚNG TÔI LÀ COFFEE HOUSE</h5>
+                                <div class="mt-5">
+                                    <i class="fa fa-map" aria-hidden="true"></i>
+                                    Trụ sở tại 101B Lê Hữu Trác
+                                </div>
+                                <div class="mt-2">
+                                    <i class="fa fa-phone" aria-hidden="true"></i>
+                                    <span>:</span>
+                                    <a href="tel:0987654253">0987654253</a>
+                                </div>
+                                <div class="mt-2">
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    <span>:</span>
+                                    <a href="mailto:Shampo@gmail.com">Shampo@gmail.com</a>
+                                </div>
+                                <div class="mt-3 mb-5">
+                                    <a href=""><i class="fab fa-facebook" aria-hidden="true"></i></a>
+                                    <a href=""><i class="fab fa-google-plus" aria-hidden="true"></i></a>
+                                    <a href=""><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                                </div>
+                                <hr>
+                                <div class="row row-cols-1 row-cols-md-2">
+                                    <div class="col-12 col-md-6">
+                                        <h5>CHĂM SÓC KHÁCH HÀNG
+                                            <span>
+                                                <button class="btn" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#menu1" aria-controls="menu1" aria-expanded="false">
+                                                    <i class="fa fa-angle-down text-light" aria-hidden="true"></i>
+                                                </button>
+                                            </span>
+                                        </h5>
+                                        <div class="collapse text-md-end text-start" id="menu1">
+                                            <ul class="list-unstyled">
+                                                <li><a href="index.html">Trang chủ</a></li>
+                                                <li><a href="">Giới thiệu</a></li>
+                                                <li><a href="">Sản Phẩm</a></li>
+                                                <li><a href="">Dịch vụ</a></li>
+                                                <li><a href="">Tin tức</a></li>
+                                                <li><a href="">Liên hệ</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <h5>LIÊN HỆ VỚI CHÚNG TÔI
+                                            <span>
+                                                <button class="btn" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#menu2" aria-controls="menu2" aria-expanded="false">
+                                                    <i class="fa fa-angle-down text-light" aria-hidden="true"></i>
+                                                </button>
+                                            </span>
+                                        </h5>
+                                        <div class="collapse text-start" id="menu2">
+                                            <ul class="list-unstyled">
+                                                <li><a href="index.html">Trang chủ</a></li>
+                                                <li><a href="">Giới thiệu</a></li>
+                                                <li><a href="">Sản Phẩm</a></li>
+                                                <li><a href="">Dịch vụ</a></li>
+                                                <li><a href="">Tin tức</a></li>
+                                                <li><a href="">Liên hệ</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-5 text-light justify-content-between">
+                        <div class="col">
+                            Made by <b>NDK</b>
+                            <i class="fa fa-copyright" aria-hidden="true"></i>
+                            2021
+                        </div>
+                        <div class="col text-end">
+                            <a href="#header" class="text-light" id="up-to-header" role="button">
+                                Lên đầu trang
+                                <i class="fa fa-angle-up" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="sign-in-up-form__modal" tabindex="-1" aria-labelledby="form-modal"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark">
+                        <div id="form-modal">
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <button class="tab-btn me-3 active" id="signin-tab" data-bs-toggle="tab"
+                                    data-bs-target="#nav-signin" type="button" role="tab" aria-controls="nav-signin"
+                                    aria-selected="true">
+                                    ĐĂNG NHẬP
+                                </button>
+                                <button class="tab-btn" id="register-tab" data-bs-toggle="tab"
+                                    data-bs-target="#nav-register" type="button" role="tab" aria-controls="nav-register"
+                                    aria-selected="false">
+                                    ĐĂNG KÝ
+                                </button>
+                            </div>
+                        </div>
+                        <button class="btn" type="button" data-bs-dismiss="modal">
+                            <i class="fa fa-close text-warning" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-signin" role="tabpanel"
+                                aria-labelledby="signin-tab">
+                                <!-- form sign in-->
+                                <form action="">
+                                    <div class="text-center">
+                                        <input type="checkbox" id="loginAdmin__cb">
+                                        <label for="cb-loginAdmin">Bạn có muốn đăng nhập admin?</label>
+                                    </div>
+                                    <div class="row text-end mt-2">
+                                        <label for="lg-username" class="col-4">
+                                            User Name:</label>
+                                        <input type="text" class="col-6" id="lg-username"
+                                            placeholder="Enter your username...">
+                                    </div>
+                                    <div class="row text-end mt-2">
+                                        <label for="lg-password" class="col-4">Password:</label>
+                                        <input type="password" class="col-6" name="" id="lg-password"
+                                            placeholder="Enter your password...">
+                                    </div>
+                                    <div id="login-error" class="text-danger text-center visually-hidden">
+                                        <i class="fas fa-times-circle"></i> Tên đăng nhập hoặc mật khẩu không đúng!
+                                    </div>
+                                    <div id="blank-login-error" class="text-danger text-center visually-hidden">
+                                        <i class="fas fa-times-circle"></i> Nhập đủ để đăng nhập!
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <button type="button" class="btn btn-outline-dark" onclick="login()">
+                                            Login Now
+                                        </button>
+                                    </div>
+                                </form>
+                                <div id="login-with-other-way" class="text-center">
+                                    <div class="my-2">Or</div>
+                                    <button class="btn btn-primary">
+                                        <i class="fab fa-facebook" aria-hidden="true"></i>
+                                        Facebook
+                                    </button>
+                                    <button class="btn btn-danger ms-2">
+                                        <i class="fab fa-google-plus" aria-hidden="true"></i>
+                                        Google
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-register" role="tabpanel" aria-labelledby="register-tab">
+                                <!-- form sign up-->
+                                <form action="">
+                                    <div class="row text-end">
+                                        <label for="new-cusName" class="col-4">
+                                            Customer Name:
+                                        </label>
+                                        <input type="text" class="col-6" id="new-cusName"
+                                            placeholder="Enter your name...">
+                                    </div>
+                                    <div class="row text-end mt-2">
+                                        <label for="new-email" class="col-4">
+                                            Email:</label>
+                                        <input type="email" class="col-6" id="new-email"
+                                            placeholder="Enter your email...">
+                                    </div>
+                                    <div id="email-registered-error" class="text-danger text-center visually-hidden">
+                                        <i class="fas fa-times-circle"></i> Email đã được đăng ký!
+                                    </div>
+                                    <div class="row text-end mt-2">
+                                        <label for="new-phoneNumber" class="col-4">Phone Number:</label>
+                                        <input type="tel" class="col-6" id="new-phoneNumber"
+                                            placeholder="Enter your phone number...">
+                                    </div>
+                                    <div id="phoneNumber-registered-error"
+                                        class="text-danger text-center visually-hidden">
+                                        <i class="fas fa-times-circle"></i> Số điện thoại đã được đăng ký!
+                                    </div>
+                                    <div class="row text-end mt-2">
+                                        <label for="new-address" class="col-4">Address:</label>
+                                        <input type="text" class="col-6" id="new-address"
+                                            placeholder="Enter your address...">
+                                    </div>
+                                    <div class="row text-end mt-2">
+                                        <label for="new-username" class="col-4">User
+                                            Name:</label>
+                                        <input type="text" class="col-6" id="new-username"
+                                            placeholder="Enter a new username...">
+                                    </div>
+                                    <div id="username-registered-error" class="text-danger text-center visually-hidden">
+                                        <i class="fas fa-times-circle"></i> Tên đăng nhập đã được đăng ký!
+                                    </div>
+                                    <div class="row text-end mt-2">
+                                        <label for="new-password" class="col-4">Password:</label>
+                                        <input type="password" class="col-6" name="" id="new-password"
+                                            placeholder="Enter your password...">
+                                    </div>
+                                    <div class="row text-end mt-2">
+                                        <label for="repeated-password" class="col-4">Password:</label>
+                                        <input type="password" class="col-6" name="" id="repeated-password"
+                                            placeholder="Repeat your password...">
+                                    </div>
+                                    <div id="password-repeated-error" class="text-danger text-center visually-hidden">
+                                        <i class="fas fa-times-circle"></i> Mật khẩu không khớp!
+                                    </div>
+                                    <div id="blank-error" class="text-danger text-center visually-hidden">
+                                        <i class="fas fa-times-circle"></i> Điền đủ thông tin để đăng ký!
+                                    </div>
+                                    <div class="text-end mt-3 pe-2">
+                                        <button type="button" class="btn btn-outline-dark" onclick="register()">
+                                            Register Now
+                                        </button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal4 id="product-detail" -->
+        <div class="modal fade" id="product-detail__modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"></h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row text-center">
+                            <img class="col-6 img-fluid" src="" id="mDetail-img">
+                            <div class="col-6">
+                                <div class="d-flex flex-column align-content-center" id="detail-content">
+                                    <div>
+                                        <span id="vote">
+                                            <i class="fa fa-star" id='star-1' aria-hidden="true"></i>
+                                            <i class="fa fa-star" id='star-2' aria-hidden="true"></i>
+                                            <i class="fa fa-star" id='star-3' aria-hidden="true"></i>
+                                            <i class="fa fa-star" id='star-4' aria-hidden="true"></i>
+                                            <i class="fa fa-star" id='star-5' aria-hidden="true"></i>
+                                        </span>
+                                        <span>&#160|&#160</span>
+                                        <span>
+                                            Thương hiệu:
+                                            <span id="mBrand" class="text-muted">
+
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <h3 id="mProduct-name" class="mt-4"></h3>
+                                    <h3 class="text-warning">
+                                        <span id="mPrice"></span>
+                                        <i class="fa fa-dong-sign"></i>
+                                    </h3>
+                                    <div class="ps-3">
+                                        <button class="border-dark rounded-circle bg-light" type="button"
+                                            style="height:2rem; width:2rem" id="btn-minus" onclick="minus_qty()">
+                                            <b>-</b>
+                                        </button>
+                                        <input type="text" class="text-center" id="mQty" value="1">
+                                        <button class="border-dark rounded-circle bg-light" type="button"
+                                            style="height:2rem; width:2rem" id="btn-add" onclick="add_qty()">
+                                            <b>+</b>
+                                        </button>
+                                    </div>
+                                    <div class="product-info my-5">
+                                        <b>Thông tin:</b><br>
+                                        <span>Thông tin chưa được cập nhật</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-warning border-dark rounded-pill" type="button" id="btn-order">
+                                    <b>Đặt hàng ngay</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal1 id="cart-table" -->
+        <div class="modal fade" id="cart-table__modal" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            GIỎ HÀNG
+                        </h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table align-middle" style="margin-top:10px;">
+                            <thead class="table table-bordered table-dark ">
+                                <tr class="text-center text-warning">
+                                    <th scope="col">STT</th>
+                                    <th scope="col">Ảnh</th>
+                                    <th scope="col">Sản phẩm</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-body"></tbody>
+                        </table>
+                        <div class="text-end float-end">
+                            <table>
+                                <tboby>
+                                    <tr>
+                                        <th scope='row'>Nhập mã giả giá:</th>
+                                        <td class="input-group text-end w-100">
+                                            <input type="text" class="form-control" id="coupon"
+                                                placeholder="Nhập mã giảm (thêm dấu phẩy để sử dụng nhiều mã)">
+                                            <button class="btn btn-outline-dark" type="button"
+                                                onclick="applyCoupon()">Áp dụng
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Tạm Tính:</th>
+                                        <td id="amount">0 đ</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Giảm giá:</th>
+                                        <td id="discount">0 đ</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Còn lại:</th>
+                                        <td id="total">0 đ</td>
+                                    </tr>
+                                </tboby>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-warning text-dark fw-bold px-5" data-bs-toggle="modal"
+                            data-bs-target="#bill-info__modal" onclick="showCusInfo()">
+                            Tiếp
+                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal2 id="bill-info" -->
+        <div class="modal fade" id="bill-info__modal" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">
+                            <i class="fa fa-check-circle text-warning" aria-hidden="true"></i>
+                            XÁC NHẬN ĐƠN HÀNG
+                        </h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="row">
+                                <div class="col">
+                                    <h5>Thông tin nhận hàng</h5>
+                                    <div class="row mt-3">
+                                        <div class="col mb-3">
+                                            <input type="text" class="form-control" placeholder="Họ tên" id="cusName"
+                                                name="cusName" disabled>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" class="form-control" placeholder="Số điện thoại"
+                                                id="phone" name="phone" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="email" class="form-control" id="email" name="email"
+                                            placeholder="Địa chỉ email" disabled>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" placeholder="Địa chỉ" name="address"
+                                            id="address">
+                                    </div>
+                                    <div class="col">
+                                        <textarea class="form-control" rows="5" id="notes" name="notes"
+                                            placeholder="Ghi chú thêm: "></textarea>
+                                    </div>
+
+                                </div>
+                                <div class="col mb-3">
+                                    <div class="payment-method">
+                                        <h5>Hình thức thanh toán</h5>
+                                        <div class="form-check border">
+                                            <input type="radio" class="m-2" name="payMethod" value="0" checked>
+                                            <img src="img/h1.svg" alt="" style="width:55px">
+                                            <label class="form-check-label m-4">
+                                                Thanh toán khi nhận hàng(COD)
+                                            </label>
+                                        </div><br>
+                                        <div class="form-check border">
+                                            <input type="radio" class="m-2" value="1" name="payMethod">
+                                            <img src="img/h5.png" alt="" style="width:55px">
+                                            <label class="form-check-label m-4">
+                                                Thẻ ATM/App ngân hàng
+                                            </label>
+                                        </div><br>
+                                        <div class="form-check border">
+                                            <input type="radio" class="m-2" value="2" name="payMethod">
+                                            <img src="img/h3.png" alt="" style="width:55px">
+                                            <label class="form-check-label m-4">
+                                                Ví điện tử ZaloPay
+                                            </label>
+                                        </div><br>
+                                        <div class="form-check border">
+                                            <input type="radio" class="m-2" name="payMethod">
+                                            <img src="img/h4.png" alt="" style="width:55px">
+                                            <label class="form-check-label m-4">
+                                                Ví MOMO
+                                            </label>
+                                        </div><br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button type="button" class="btn btn-secondary text-light" data-bs-toggle="modal"
+                                    data-bs-target="#cart-table__modal" data-bs-dismiss="modal">
+                                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                    Trở lại trang trước
+                                </button>
+                                <button type="button" class="btn btn-outline-warning text-dark fw-bold"
+                                    onclick="confirmBill()">
+                                    Xác nhận đặt hàng
+                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal3 id="bill-display" -->
+        <div class="modal fade" id="display-bill__modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="display-bill__modal-body">
+                        <div class="row">
+                            <img class="col-4" src="img/cofeehouse1-1129461694-612x612.jpg" alt="" class="img-fluid"
+                                width="300px">
+                            <div class="col-8 text-center d-flex flex-row align-items-center">
+                                <h1>HÓA ĐƠN MUA HÀNG</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col ">
+                                <div class="row mb-3">
+                                    <label class="form-label fw-bold col-3 text-end">Tên khách hàng:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="dName" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="form-label fw-bold col-3 text-end">Số điện thoại:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="dPhoneNumber" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="form-label fw-bold col-3 text-end">Địa chỉ:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="dAddress" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="form-label fw-bold col-3 text-end">Mã giảm giá:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="dCoupon" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <table class="table border border-dark text-center">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Tên sản phẩm</th>
+                                        <th scope="col">Số lượng</th>
+                                        <th scope="col">Đơn giá</th>
+                                        <th scope="col">Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-body-dBill"></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <th scope='row'>Discount:</th>
+                                        <td id='dDiscount'>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <th scope='row'>Total:</th>
+                                        <td id='dTotal'>0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="row mt-5 p-3" style="background-color: burlywood;">
+                            <div class="col-2">
+                                <img src="img/QR-1620927223.jpg" alt="" width="120px">
+                            </div>
+                            <div class="col-5">
+                                <h3>COFFEE HOUSE</h3>
+                                <p>Địa chỉ: 101B, Lê Hữu Trác, Sơn Trà, Đà Nẵng.</p>
+                                <p>SĐT: 0987654321</p>
+                            </div>
+                            <div class="col-5">
+                                <p>Tổng giám đốc: Nguyễn Đăng Kỳ</p>
+                                <p>Phó giám đốc: Nguyễn Văn Hiếu</p>
+                                <p>Phó giám đốc: Phạm Thị Thúy</p>
+                                <p>Phó giám đốc: Ngô Thị Luyên</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--modal edit info-->
+        <div class="modal fade" id="edit-info__modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="text-center bg-dark text-warning py-2">
+                        <h5 class="modal-title">Chỉnh Sửa Thông Tin</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="edit-cusName">Tên khách hàng:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="edit-cusName">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="edit-phoneNumber">Số điện thoại:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="edit-phoneNumber">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="edit-address">Địa chỉ:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="edit-address">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="edit-email">Email:</label>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="edit-email">
+                            </div>
+                        </div>
+                        <div id="blank-error-editInfo" class="text-danger text-center visually-hidden mt-3">
+                            Vui lòng điền đủ thông tin!
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-warning px-5" onclick="saveEditInfo()">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--modal edit password-->
+        <div class="modal fade" id="change-password__modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="text-center bg-dark text-warning py-2">
+                        <h5 class="modal-title">Thay Đổi Mật Khẩu</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="edit-oldPassword">Mật khẩu cũ:</label>
+                            <div class="col-8">
+                                <input type="password" class="form-control" id="edit-oldPassword"
+                                    onfocusout="checkOldPassword()">
+                            </div>
+                        </div>
+                        <div id="edit-oldPassword-error" class="text-danger text-center visually-hidden mt-3">
+                            <i class="fas fa-times-circle"></i> Mật khẩu không đúng!
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="edit-newPassword">Mật khẩu mới:</label>
+                            <div class="col-8">
+                                <input type="password" class="form-control" id="edit-newPassword">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label class="col-4 text-end" for="edit-repeatedPassword">Nhập lại mật khẩu:</label>
+                            <div class="col-8">
+                                <input type="password" class="form-control" id="edit-repeatedPassword">
+                            </div>
+                        </div>
+                        <div id="edit-repeatPasword-error" class="text-danger text-center visually-hidden mt-3">
+                            <i class="fas fa-times-circle"></i> Mật khẩu không khớp!
+                        </div>
+                        <div id="edit-blank-error" class="text-danger text-center visually-hidden mt-3">
+                            Vui lòng điền đủ thông tin!
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-warning px-5" onclick="saveEditPassword()">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="js/ConnectAPI.js"></script>
+        <script src="js/Libs.js"></script>
+        <script src="js/Login.js"></script>
+        <script src="js/Register.js"></script>
+        <script src="js/Slides.js"></script>
+        <script src="js/Index.js"></script>
+    </body>
+
+</html>
