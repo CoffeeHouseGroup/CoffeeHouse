@@ -1,0 +1,192 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap");
+.container-fluid a {
+	text-decoration: none;
+	color: black;
+}
+label {
+	font-weight: bold;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"] {
+	border: none;
+	outline: none;
+	border-bottom: #252525 solid 1px;
+}
+.header nav {
+	background-color: #252525;
+	border-radius: 2.5rem;
+	position: absolute;
+}
+.container-fluid li {
+	list-style-type: none;
+}
+.navbar {
+	height: 5rem;
+	margin-top: 5%;
+	justify-content: space-evenly !important;
+	flex-wrap: nowrap !important;
+}
+.logo-center {
+	background-color: #252525;
+	border-radius: 50%;
+}
+.logo-center:hover {
+	transform: scale(1.1);
+}
+.nav-item:hover > a {
+	color: #ffab23 !important;
+}
+.section_slider {
+	position: relative;
+}
+.fa-search {
+	color: white;
+}
+.fa-search:hover {
+	color: #ffab23;
+}
+.fa-shopping-cart {
+	color: #ffab23;
+}
+.header {
+	width: 100%;
+	position: absolute;
+	top: 0;
+}
+#link-login:hover,
+#accDropdown:hover {
+	color: #ffab23 !important;
+}
+.product-types {
+	top: 2.5rem;
+	display: none;
+}
+.products:hover .product-types {
+	display: block;
+}
+.products:hover .product-types a:hover {
+	color: #fda71c;
+}
+.tab-btn {
+	color:  #fda71c;
+	background-color: #252525;
+	font-weight: 600;
+	border: none;
+}
+.tab-btn.active {
+	color: black;
+	background-color: #fda71c;
+}
+.section_about {
+	padding: 0 10%;
+}
+.large-title {
+	color: #ffab23 !important;
+}
+.small-title {
+	font-family: "Dancing Script", cursive;
+}
+.btn-menu {
+	background-color: transparent;
+	border: black solid 1px;
+	color: black;
+	padding: 5% 15%;
+	border-radius: 2rem;
+	width: max-content;
+}
+.btn-menu.active {
+	color: white !important;
+	border: #ffab23 solid 2px;
+	background-color: #ffab23 !important;
+}
+.section_menu_today {
+	background-color: #f4f3ea;
+}
+.menu {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	column-gap: 2rem;
+}
+@media only screen and (max-width: 700px) {
+	.menu {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+}
+.coffee-title {
+	font-size: 1rem;
+	font-weight: bold;
+}
+.price {
+	color: red;
+}
+.coffee-title::after {
+	content: ".........................................................................................................";
+}
+.btn-see-more {
+	margin-top: 5%;
+}
+.btn-see-more a {
+	border: #b9b9b9 solid 1px;
+	border-radius: 1.5rem;
+	padding: 0.5% 1%;
+}
+.btn-see-more a:hover {
+	background-color: #ffab23;
+	color: white;
+}
+.gallery {
+	padding: 0 15%;
+}
+
+.swiper-slide {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	font-size: 1.3rem;
+}
+.review-swiper .swiper-pagination {
+	background-color: #ffffff !important;
+	display: flex !important;
+	flex-direction: row;
+	justify-content: space-around;
+	position: static !important;
+}
+.review-swiper .swiper-pagination-bullet {
+	text-align: center;
+	color: white;
+	opacity: 1;
+	background: transparent;
+}
+
+.review-swiper .swiper-pagination-bullet-active img {
+	border: #ffab23 solid 2px;
+}
+.section_hours_book {
+	background-image: url("/img/bg_hours_book.jpg");
+	background-size: cover;
+}
+footer {
+	background-image: url("/img/bg_footer.png");
+	background-size: cover;
+}
+.section_bottom_footer a {
+	color: white;
+}
+.section_bottom_footer a:hover {
+	color: #ffab23;
+}
+#menu1 {
+	margin-right: 4.5rem;
+}
+#up-to-header {
+	border: #ffab23 solid 1px;
+	border-radius: 1rem;
+	padding: 1% 2%;
+}
+#up-to-header:hover {
+	color: #ffab23 !important;
+	scroll-behavior: smooth;
+}
