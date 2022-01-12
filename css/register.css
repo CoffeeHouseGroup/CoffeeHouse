@@ -18,7 +18,7 @@ body {
     height: 100vh;
 }
 #reg-img {
-    background-image: url(././img/bg-reg.jpg);
+    background-image: url("./img/bg-reg.jpg");
     background-size: cover;
 }
 
