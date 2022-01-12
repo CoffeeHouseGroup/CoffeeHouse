@@ -89,11 +89,22 @@ class BillDetail {
 		this.qty = billDetailTemp.qty;
 	}
 }
+
+class StatusBill {
+	constructor() {
+		this.isMaking = true;
+		this.isDelivering = false;
+		this.isReceived = false;
+		this.isPayed = false;
+	}
+}
+
 class Bill {
 	constructor(cusId) {
 		this.cusId = cusId;
 		this.coupon = null; // Object coupon
 		this.details = [];
+		this.status = new StatusBill();
 		this.notes = "";
 		this.payMethod = 0;
 		this.address = "";
@@ -161,6 +172,7 @@ class Asset {
 // Const
 const ONCLICK_ATTR = "onclick";
 const CHECKED_ATTR = "checked";
+const DISABLED_ATTR = "disabled";
 const CLICK_EVENT = "click";
 const DBCLICK_EVENT = "dblclick";
 const MOUSELEAVE_EVENT = "mouseleave";
@@ -168,6 +180,10 @@ const MODAL_SHOW_EVENT = "show.bs.modal";
 const MODAL_HIDE_EVENT = "hide.bs.modal";
 const PASSWORD_TYPE = "password";
 const TEXT_TYPE = "text";
+const DELIVERING = "delivering";
+const RECEIVED = "received";
+const PAYED = "payed";
+const CUSTOMER_INFO_KEY = "customerInfo";
 const VND = " đ";
 const EMPTY = "";
 const MYGMAIL = "Dangkyqt2509@gmail.com";
@@ -195,6 +211,6 @@ const sendEmail = (subject, message, mailTo, attachments = null) => {
 		From: MYGMAIL,
 		Subject: subject,
 		Body: message,
-		Attachments: attachments
+		Attachments: attachments,
 	});
 };

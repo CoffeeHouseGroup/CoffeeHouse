@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Đăng Ký</title>
+        <link rel="stylesheet" href="css/register.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+            integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://smtpjs.com/v3/smtp.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
+            integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+
+    <body>
+        <div class="container-all m-0">
+            <div class="row h-100 w-100" id="start-section">
+                <div class="col-5 h-100" id="reg-img"></div>
+                <div class="col-7 d-flex flex-column align-items-center justify-content-center">
+                    <div class="fw-bold" id='large-title'>COFFEE HOUSE</div>
+                    <div class="w-100 mt-5">
+                        <div class="row text-end">
+                            <label for="new-cusName" class="col-4">Họ và tên:</label>
+                            <input type="text" class="col-6" id="new-cusName">
+                        </div>
+                        <div class="row text-end mt-2">
+                            <label for="new-email" class="col-4">Email:</label>
+                            <input type="email" class="col-6" id="new-email">
+                        </div>
+                        <div id="email-registered-error" class="text-danger text-center visually-hidden">
+                            <i class="fas fa-times-circle"></i> Email đã được đăng ký!
+                        </div>
+                        <div id="blank-start-error" class="text-danger text-center visually-hidden">
+                            <i class="fas fa-times-circle"></i> Vui lòng nhập đủ thông tin!
+                        </div>
+                    </div>
+                    <button class="btn btn-warning fw-bold px-5 mt-5" type="button" onclick="nextToOTP()">
+                        Tiếp
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="OTP-section"
+                class="h-100 d-flex flex-column align-items-center justify-content-center visually-hidden">
+                <div class="text-center bg-warning px-2" id='notification'>
+                    <span class="text-wrapper">
+                        <span class="letters">
+                            OTP đã được gửi đến mail của bạn. Vui lòng kiểm tra email và nhập đúng mã để tiếp tục!
+                        </span>
+                    </span>
+                </div>
+                <div class="w-100 mt-5 entering-OTP">
+                    <div class="row text-end">
+                        <label for="OTP-code" class="col-5">Nhập mã OTP:</label>
+                        <input type="text" class="col-4 text-center" id="OTP-code" placeholder="OTP có 6 chữ số..."
+                            oninput="enterOTP()">
+                    </div>
+                    <div id="OTP-wrong-error" class="text-center text-danger visually-hidden">
+                        <i class="fas fa-times-circle"></i>
+                        Mã OTP sai, vui lòng nhập lại!
+                    </div>
+                </div>
+            </div>
+            <div id="end-section" class="h-100 d-flex flex-column align-items-center justify-content-center visually-hidden">
+                <div class="w-100 mt-5 entering-OTP">
+                    <div class="row text-end mt-2">
+                        <label for="new-phoneNumber" class="col-4">Số điện thoại:</label>
+                        <input type="tel" class="col-5 text-center" id="new-phoneNumber"
+                            placeholder="Nhập số điện thoại của bạn...">
+                    </div>
+                    <div id="phoneNumber-registered-error" class="text-danger text-center visually-hidden">
+                        <i class="fas fa-times-circle"></i> Số điện thoại đã được đăng ký!
+                    </div>
+                    <div class="row text-end mt-2">
+                        <label for="new-address" class="col-4">Địa chỉ:</label>
+                        <input type="text" class="col-5 text-center" id="new-address"
+                            placeholder="Nhập địa chỉ của bạn...">
+                    </div>
+                    <div class="row text-end mt-2">
+                        <label for="new-username" class="col-4">Tên đăng nhập:</label>
+                        <input type="text" class="col-5 text-center" id="new-username"
+                            placeholder="Chon một tên đăng nhập nào...">
+                    </div>
+                    <div id="username-registered-error" class="text-danger text-center visually-hidden">
+                        <i class="fas fa-times-circle"></i> Tên đăng nhập đã được đăng ký!
+                    </div>
+                    <div class="row text-end mt-2">
+                        <label for="new-password" class="col-4">Mật khẩu:</label>
+                        <input type="password" class="col-5 text-center" name="" id="new-password"
+                            placeholder="Nhập mật khẩu của bạn...">
+                    </div>
+                    <div id="password-length-error" class="text-danger text-center visually-hidden">
+                        <i class="fas fa-times-circle"></i> Mật khẩu phải có độ dài lớn hơn 5!
+                    </div>
+                    <div class="row text-end mt-2">
+                        <label for="repeated-password" class="col-4">Nhập lại mật khẩu:</label>
+                        <input type="password" class="col-5 text-center" name="" id="repeated-password"
+                            placeholder="Nhập lại mật khẩu ở trên...">
+                    </div>
+                    <div id="password-repeated-error" class="text-danger text-center visually-hidden">
+                        <i class="fas fa-times-circle"></i> Mật khẩu không khớp!
+                    </div>
+                    <div id="blank-error" class="text-danger text-center visually-hidden">
+                        <i class="fas fa-times-circle"></i> Điền đủ thông tin để đăng ký!
+                    </div>
+                    <div class="text-center mt-3 pe-2">
+                        <button type="button" class="btn btn-warning fw-bold" onclick="register()">
+                            Đăng kí ngay
+                            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <script src="js/ConnectAPI.js"></script>
+            <script src="js/Libs.js"></script>
+            <script src="js/Register.js"></script>
+    </body>
+
+</html>

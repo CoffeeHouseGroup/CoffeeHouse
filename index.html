@@ -17,14 +17,12 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
             crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
             integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://smtpjs.com/v3/smtp.js"></script>
-        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.1.5/html2canvas.js"
-            integrity="sha512-cqEHlkERKpEPV9WFiByrBe8lBmGErGBj8RryppKDhtLnpOHyOWHGf7P40BpNnjrzZDJ3qdFZi2Fw6YrIhITM3A=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.0/html2pdf.bundle.min.js"
             integrity="sha512-YLG3N5dufxTTEyEgDIKb3IMDTz/NsWiGH6+6OvzrJBu/XZNRiZb9UxuNoMn8RdTtuKgpjtzTeWm/ITkZkj2i3Q=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -56,20 +54,21 @@
                         <div class="container">
                             <div class="row">
                                 <h5 class="col-6 text-center mt-2">Chào mừng bạn đến với Coffee House!</h5>
-                                <div class="col-3"></div>
-                                <div class="col-2 text-center mt-2">
-                                    <a class="btn active" id="link-login" role="button" data-bs-toggle="modal"
-                                        data-bs-target="#sign-in-up-form__modal">
+                                <div class="col-2"></div>
+                                <div class="col-4 text-center mt-2">
+                                    <div class="btn active" id="link-login">
                                         <i class="fa fa-user mr-2" aria-hidden="true"></i>
-                                        Đăng Nhập/ Đăng ký
-                                    </a>
+                                        <span><a href="login.html">Đăng Nhập</a></span>
+                                        <span>/</span>
+                                        <span><a href="register.html">Đăng Ký</a></span>
+                                    </div>
                                     <div class="dropdown visually-hidden" id="manage-account">
                                         <a class="btn dropdown-toggle" role="button" id="accDropdown"
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="accDropdown">
                                             <li><a class="dropdown-item" role="button" data-bs-toggle="modal"
-                                                    data-bs-target="#history__modal">
+                                                    data-bs-target="#history__modal" onclick="showHistory()">
                                                     Lịch sử mua hàng
                                                 </a>
                                             </li>
@@ -162,6 +161,13 @@
                             hiện ra những hạt đậu đặc biệt và hiếm đến nỗi chúng tôi có thể chờ đợi để mang chúng về.
                     </div>
                     <img class="col-sm-12 col-md-7 pt-sm-5 img-fluid" src="img/bg_about.png">
+                </div>
+            </div>
+            <div class="section_coupon py-5">
+                <div class="container">
+                    <h2 class="large-title text-center mb-5">MÃ GIẢM GIÁ</h2>
+                    <div id="list-coupons">
+                    </div>
                 </div>
             </div>
             <div class="section_menu_today text-center py-5">
@@ -578,147 +584,31 @@
             </footer>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="sign-in-up-form__modal" tabindex="-1" aria-labelledby="form-modal"
-            aria-hidden="true">
+        <!-- Modal enter the OTP code -->
+        <div class="modal fade" id="OTP__modal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header bg-dark">
-                        <div id="form-modal">
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <button class="tab-btn me-3 active" id="signin-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-signin" type="button" role="tab" aria-controls="nav-signin"
-                                    aria-selected="true">
-                                    ĐĂNG NHẬP
-                                </button>
-                                <button class="tab-btn" id="register-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-register" type="button" role="tab" aria-controls="nav-register"
-                                    aria-selected="false">
-                                    ĐĂNG KÝ
-                                </button>
-                            </div>
-                        </div>
-                        <button class="btn" type="button" data-bs-dismiss="modal">
-                            <i class="fa fa-close text-warning" aria-hidden="true"></i>
-                        </button>
+                    <div class="modal-header">
+                        <h3 class="modal-title">Nhập mã OTP</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" id="nav-signin" role="tabpanel"
-                                aria-labelledby="signin-tab">
-                                <!-- form sign in-->
-                                <form action="">
-                                    <div class="text-center">
-                                        <input type="checkbox" id="loginAdmin__cb">
-                                        <label for="cb-loginAdmin">Bạn có muốn đăng nhập admin?</label>
-                                    </div>
-                                    <div class="row text-end mt-2">
-                                        <label for="lg-username" class="col-4">
-                                            User Name:</label>
-                                        <input type="text" class="col-6" id="lg-username"
-                                            placeholder="Enter your username...">
-                                    </div>
-                                    <div class="row text-end mt-2">
-                                        <label for="lg-password" class="col-4">Password:</label>
-                                        <input type="password" class="col-6" name="" id="lg-password"
-                                            placeholder="Enter your password...">
-                                    </div>
-                                    <div id="login-error" class="text-danger text-center visually-hidden">
-                                        <i class="fas fa-times-circle"></i> Tên đăng nhập hoặc mật khẩu không đúng!
-                                    </div>
-                                    <div id="blank-login-error" class="text-danger text-center visually-hidden">
-                                        <i class="fas fa-times-circle"></i> Nhập đủ để đăng nhập!
-                                    </div>
-                                    <div class="text-center mt-3">
-                                        <button type="button" class="btn btn-outline-dark" onclick="login()">
-                                            Login Now
-                                        </button>
-                                    </div>
-                                </form>
-                                <div id="login-with-other-way" class="text-center">
-                                    <div class="my-2">Or</div>
-                                    <button class="btn btn-primary">
-                                        <i class="fab fa-facebook" aria-hidden="true"></i>
-                                        Facebook
-                                    </button>
-                                    <button class="btn btn-danger ms-2">
-                                        <i class="fab fa-google-plus" aria-hidden="true"></i>
-                                        Google
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="nav-register" role="tabpanel" aria-labelledby="register-tab">
-                                <!-- form sign up-->
-                                <form action="">
-                                    <div class="row text-end">
-                                        <label for="new-cusName" class="col-4">
-                                            Customer Name:
-                                        </label>
-                                        <input type="text" class="col-6" id="new-cusName"
-                                            placeholder="Enter your name...">
-                                    </div>
-                                    <div class="row text-end mt-2">
-                                        <label for="new-email" class="col-4">
-                                            Email:</label>
-                                        <input type="email" class="col-6" id="new-email"
-                                            placeholder="Enter your email...">
-                                    </div>
-                                    <div id="email-registered-error" class="text-danger text-center visually-hidden">
-                                        <i class="fas fa-times-circle"></i> Email đã được đăng ký!
-                                    </div>
-                                    <div class="row text-end mt-2">
-                                        <label for="new-phoneNumber" class="col-4">Phone Number:</label>
-                                        <input type="tel" class="col-6" id="new-phoneNumber"
-                                            placeholder="Enter your phone number...">
-                                    </div>
-                                    <div id="phoneNumber-registered-error"
-                                        class="text-danger text-center visually-hidden">
-                                        <i class="fas fa-times-circle"></i> Số điện thoại đã được đăng ký!
-                                    </div>
-                                    <div class="row text-end mt-2">
-                                        <label for="new-address" class="col-4">Address:</label>
-                                        <input type="text" class="col-6" id="new-address"
-                                            placeholder="Enter your address...">
-                                    </div>
-                                    <div class="row text-end mt-2">
-                                        <label for="new-username" class="col-4">User
-                                            Name:</label>
-                                        <input type="text" class="col-6" id="new-username"
-                                            placeholder="Enter a new username...">
-                                    </div>
-                                    <div id="username-registered-error" class="text-danger text-center visually-hidden">
-                                        <i class="fas fa-times-circle"></i> Tên đăng nhập đã được đăng ký!
-                                    </div>
-                                    <div class="row text-end mt-2">
-                                        <label for="new-password" class="col-4">Password:</label>
-                                        <input type="password" class="col-6" name="" id="new-password"
-                                            placeholder="Enter your password...">
-                                    </div>
-                                    <div class="row text-end mt-2">
-                                        <label for="repeated-password" class="col-4">Password:</label>
-                                        <input type="password" class="col-6" name="" id="repeated-password"
-                                            placeholder="Repeat your password...">
-                                    </div>
-                                    <div id="password-repeated-error" class="text-danger text-center visually-hidden">
-                                        <i class="fas fa-times-circle"></i> Mật khẩu không khớp!
-                                    </div>
-                                    <div id="blank-error" class="text-danger text-center visually-hidden">
-                                        <i class="fas fa-times-circle"></i> Điền đủ thông tin để đăng ký!
-                                    </div>
-                                    <div class="text-end mt-3 pe-2">
-                                        <button type="button" class="btn btn-outline-dark" onclick="register()">
-                                            Register Now
-                                        </button>
-                                    </div>
-
-                                </form>
-                            </div>
+                        <div class="row text-end mt-2">
+                            <label for="OTP-code" class="col-4">Nhập mã OPT:</label>
+                            <input type="password" class="col-6" id="OTP-code"
+                                oninput="if (this.value.length == 6) isTrueOTP()" placeholder="Nhập mã OTP...">
                         </div>
+                        <div class="row text-center text-danger mt-3">
+                            Bạn còn <span id="entering-OTP-times">5</span> lần nhập OTP!
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Modal4 id="product-detail" -->
+        <!-- Modal show product detail and order button id="product-detail" -->
         <div class="modal fade" id="product-detail__modal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
@@ -777,7 +667,7 @@
                 </div>
             </div>
         </div>
-        <!-- Modal1 id="cart-table" -->
+        <!-- Modal show all product are in cart id="cart-table" -->
         <div class="modal fade" id="cart-table__modal" tabindex="-1">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -842,7 +732,7 @@
                 </div>
             </div>
         </div>
-        <!-- modal2 id="bill-info" -->
+        <!-- modal show bill information to comfirm the order id="bill-info" -->
         <div class="modal fade" id="bill-info__modal" tabindex="-1">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -933,7 +823,7 @@
                 </div>
             </div>
         </div>
-        <!-- modal3 id="bill-display" -->
+        <!-- modal display the final bill when customer confirmed id="bill-display" -->
         <div class="modal fade" id="display-bill__modal" tabindex="-1">
             <div class="modal-dialog modal-dialog-scrollable modal-xl">
                 <div class="modal-content">
@@ -1005,7 +895,7 @@
                         </div>
                         <div class="row mt-5 p-3" style="background-color: burlywood;">
                             <div class="col-2">
-                                <img src="img/QR-1620927223.jpg" alt="" width="120px">
+                                <img src="img/momoqr.jpg" alt="" width="120px">
                             </div>
                             <div class="col-5">
                                 <h3>COFFEE HOUSE</h3>
@@ -1019,6 +909,94 @@
                                 <p>Phó giám đốc: Ngô Thị Luyên</p>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--History modal-->
+        <div class="modal fade" id="history__modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" style="height:500px">
+                <div class="modal-content">
+                    <div class="bg-dark text-center text-warning py-2">
+                        <h3 class="modal-title">
+                            <i class="fa fa-history" aria-hidden="true"></i>
+                            Lịch sử mua hàng
+                        </h3>
+                    </div>
+                    <div class="modal-body mt-2" id="history__modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--History modal-->
+        <div class="modal fade" id="history-detail__modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="bg-dark text-center text-warning py-2">
+                        <h3 class="modal-title">
+                            <i class="fas fa-info-circle"></i>
+                            Chi tiết đơn hàng
+                        </h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row justify-content-center">
+                            <div class="w-75">
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-id">Mã đơn hàng:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-id" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-address">Địa chỉ:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-address" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-date">Ngày xuất hóa đơn:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-date" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-coupon">Mã giảm giá:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-coupon" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-4 text-end fw-bold" for="bill-total">Thành tiền:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="bill-total" disabled>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label for="isReceived" class="col-4 text-end fw-bold">Đã nhận hàng</label>
+                                    <div class="col-8">
+                                        <input type="checkbox" id="isReceived" role="button">
+                                    </div>
+                                </div>
+                                <table class="table align-middle text-align mt-5">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">Tên sản phẩm</th>
+                                            <th scope="col">Số lượng</th>
+                                            <th scope="col">Đơn giá</th>
+                                            <th scope="col">Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="detailBill-tbl-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                 </div>
             </div>
@@ -1066,7 +1044,7 @@
                 </div>
             </div>
         </div>
-        <!--modal edit password-->
+        <!--modal change password-->
         <div class="modal fade" id="change-password__modal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -1090,13 +1068,16 @@
                                 <input type="password" class="form-control" id="edit-newPassword">
                             </div>
                         </div>
+                        <div id="edit-password-length-error" class="text-danger text-center visually-hidden">
+                            <i class="fas fa-times-circle"></i> Mật khẩu phải có độ dài lớn hơn 5!
+                        </div>
                         <div class="row mt-3">
                             <label class="col-4 text-end" for="edit-repeatedPassword">Nhập lại mật khẩu:</label>
                             <div class="col-8">
                                 <input type="password" class="form-control" id="edit-repeatedPassword">
                             </div>
                         </div>
-                        <div id="edit-repeatPasword-error" class="text-danger text-center visually-hidden mt-3">
+                        <div id="edit-repeatPassword-error" class="text-danger text-center visually-hidden mt-3">
                             <i class="fas fa-times-circle"></i> Mật khẩu không khớp!
                         </div>
                         <div id="edit-blank-error" class="text-danger text-center visually-hidden mt-3">
@@ -1110,12 +1091,11 @@
                 </div>
             </div>
         </div>
-        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
         <script src="js/ConnectAPI.js"></script>
         <script src="js/Libs.js"></script>
-        <script src="js/Login.js"></script>
-        <script src="js/Register.js"></script>
+        <!--<script src="js/Login.js"></script>-->
+        <!--<script src="js/Register.js"></script>-->
         <script src="js/Slides.js"></script>
         <script src="js/Index.js"></script>
     </body>

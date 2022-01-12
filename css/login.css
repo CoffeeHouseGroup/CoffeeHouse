@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap");
+*{
+    box-sizing: border-box;
+    font-size: 1.3rem;
+}
+.container-all{
+    margin: 0;
+    height:100vh;
+}
+#login-img {
+    background-image: url(/img/bg_login.jpg);
+    background-size: cover;
+    background-position: 30% 50%;
+}
+input[type="text"],
+input[type="password"]
+{
+	border: none;
+	outline: none;
+    background-color: transparent;
+	border-bottom: #252525 solid 2px;
+}
+#large-title {
+    font-size: 5rem;
+    font-family: "Dancing Script", cursive;
+    color: #352929
+}

@@ -4,10 +4,18 @@ const LOGIN_WARNING = "Bạn cần phải đăng nhập trước!";
 const ADD_TO_CART_NOTIFICATION = "Bạn đã thêm vào giỏ thành công";
 const CHANGE_PASWORD_WARNING = "Bạn có chắc muốn đổi mật khẩu?";
 const CHANGED_PASSWORD_NOTIFICATION = "Đổi mật khẩu thành công!";
+const LOGOUT_NOTIFICATION = "Đăng xuất thành công!";
+const EDIT_INFO_NOTIFICATION = "Chỉnh sửa thành công!";
 const NULL_COUPON = "Mã giảm giá trống!";
-const CHANGE_INFO_SUBJECT_EMAIL =
+const DELIVERING_STATUS_TEXT =
+	"Đang giao hàng.<br>Dự kiến sẽ tới trong 15 phút.";
+const PAYED_STATUS_TEXT = "Đã thanh toán.";
+const MAKING_STATUS_TEXT = "Đang pha chế.";
+const RECEIVED_NOTIFICATION =
+	"Chúc quý khách đã nhận hàng. Hãy thưởng thức cà phê với tậm trạng tốt nhất nhé!";
+const CHANGE_INFO_SUBJECT =
 	"[Coffee House][Chúc mừng bạn đã thay đổi thông tin cá nhân thành công!]";
-const BILL_CONFIRM_SUBJECT_EMAIL = "[Coffee House][Đơn hàng thành công!]";
+const BILL_CONFIRM_SUBJECT = "[Coffee House][Đơn hàng thành công!]";
 const tblBody = $("tbl-body");
 const tblBodyDBill = $("tbl-body-dBill");
 const productDetailModal = new bootstrap.Modal($("product-detail__modal"));
@@ -15,6 +23,7 @@ const cartTableModal = new bootstrap.Modal($("cart-table__modal"));
 const billInfoModal = new bootstrap.Modal($("bill-info__modal"));
 const displayModal = new bootstrap.Modal($("display-bill__modal"));
 const changePasswordModal = new bootstrap.Modal($("change-password__modal"));
+const editInfoModal = new bootstrap.Modal($("edit-info__modal"));
 const qtyEl = $("mQty");
 const numPro = $("num-products-in-cart");
 const menuList = document.querySelectorAll(".menu");
@@ -119,7 +128,7 @@ const buy = (cateId, id) => {
 	if (window.localStorage.getItem(CUSTOMER_INFO_KEY) == "") {
 		alert(LOGIN_WARNING);
 		productDetailModal.hide();
-		regLogModal.show();
+		window.location.href = "login.html";
 		return;
 	}
 	alert(ADD_TO_CART_NOTIFICATION);
@@ -268,8 +277,8 @@ const confirmBill = async () => {
 	$("dDiscount").innerText = bill.getDiscount() + VND;
 	$("dTotal").innerText = bill.getTotal() + VND;
 	var opt = {
-		margin: [2, 0]
-	}
+		margin: [2, 0],
+	};
 	var pdf = await html2pdf()
 		.set(opt)
 		.from($("display-bill__modal-body"))
@@ -280,7 +289,7 @@ const confirmBill = async () => {
 			data: pdf,
 		},
 	];
-	sendEmail(BILL_CONFIRM_SUBJECT_EMAIL, message, cusEmail, attachments);
+	sendEmail(BILL_CONFIRM_SUBJECT, message, cusEmail, attachments);
 	reset();
 };
 const reset = () => {
@@ -295,6 +304,107 @@ const reset = () => {
 	numPro.innerText = 0;
 };
 
+//---------------------Show history--------------------------
+const showHistory = () => {
+	$("history__modal-body").innerHTML = EMPTY;
+	var url = `${URL_API}${BILLS}`;
+	callBackAPI(url).then((res) => {
+		var billArr = res.data;
+		for (var i = billArr.length - 1; i >= 0; i--) {
+			var bill = billArr[i];
+			if (bill.cusId == cusId) {
+				$("history__modal-body").innerHTML += `
+					<div class="history-item">
+						<div class="row bg-dark text-warning">
+							<div class="col-6">Mã đơn hàng: #${bill.id}</div>
+							<div class="col-6">Ngày mua: ${new Date(bill.date).toDateString()}</div>
+						</div>
+						<div>
+							Trạng thái đơn hàng: 
+							<span class="text-muted">
+								${
+									bill.status.isDelivering
+										? bill.status.isPayed
+											? PAYED_STATUS_TEXT
+											: DELIVERING_STATUS_TEXT
+										: MAKING_STATUS_TEXT
+								}
+							</span>
+						</div>
+						<div class="text-end">
+							<a role="button" class="text-end" data-bs-toggle="modal" data-bs-target="#history-detail__modal"
+							 onclick="showDetailHistory(${bill.id})">
+								Xem chi tiết
+								<i class="fa fa-angle-double-right" aria-hidden="true"></i>
+							</a>
+						</div>
+					</div>
+				`;
+			}
+		}
+	});
+};
+
+const showDetailHistory = (billId) => {
+	const showInfo = (bill) => {
+		$("bill-id").value = bill.id;
+		$("bill-address").value = bill.address;
+		$("bill-date").value = bill.date;
+		$("bill-coupon").value =
+			bill.coupon != null
+				? `${bill.coupon.code} - ${bill.coupon.value * 100}%`
+				: 0;
+		$("bill-total").value =
+			bill.coupon != null
+				? bill.amount * (1 - bill.coupon.value) + VND
+				: bill.amount + VND;
+		if (bill.status.isReceived) {
+			$("isReceived").setAttribute(CHECKED_ATTR, EMPTY);
+			$("isReceived").setAttribute(DISABLED_ATTR, EMPTY);
+		} else {
+			$("isReceived").setAttribute(
+				ONCLICK_ATTR,
+				`updateReceivedStatus(${billId})`
+			);
+		}
+	};
+	const showAllDetail = (detailArr) => {
+		detailArr.forEach((detail, index) => {
+			callBackAPI(detail.url).then((res) => {
+				var product = res.data;
+				$("detailBill-tbl-body").innerHTML += `
+					<tr>
+						<th scope="row">${index + 1}</th>
+						<td>${product.name}</td>
+						<td>${detail.qty}</td>
+						<td>${product.price}</td>
+						<td>${detail.qty * product.price} đ</td>
+					</tr>
+				`;
+			});
+		});
+	};
+	var url = `${URL_API}${BILLS}${billId}`;
+	callBackAPI(url).then((res) => {
+		var bill = res.data;
+		var detailArr = bill.details;
+		showInfo(bill);
+		showAllDetail(detailArr);
+	});
+};
+//--------------check box isReceived------------
+const updateReceivedStatus = (id) => {
+	var url = `${URL_API}${BILLS}${id}`;
+	callBackAPI(url).then((res) => {
+		var bill = res.data;
+		bill.status.isReceived = true;
+		bill.status.isPayed = true;
+		$("isReceived").setAttribute(DISABLED_ATTR, EMPTY);
+		callBackAPI(url, PUT_METHOD, bill).then(() => {
+			alert(RECEIVED_NOTIFICATION);
+		});
+	});
+};
 //--------------------edit info and password-----------------
 //----------info---------
 const showInfo = () => {
@@ -330,7 +440,7 @@ const saveEditInfo = () => {
 				Địa chỉ: <b>${cus.info.address}</b>.<br>
 				Số điện thoại: <b>${cus.info.phoneNumber}</b>.
 			`;
-			sendEmail(CHANGE_INFO_SUBJECT_EMAIL, message, cus.info.email);
+			sendEmail(CHANGE_INFO_SUBJECT, message, cus.info.email);
 		});
 		alert(EDIT_INFO_NOTIFICATION);
 	});
@@ -359,13 +469,18 @@ const checkOldPassword = () => {
 };
 
 const saveEditPassword = () => {
-	hideEle($("edit-repeatPasword-error"));
+	hideEle($("edit-password-length-error"));
+	hideEle($("edit-repeatPassword-error"));
 	hideEle($("edit-blank-error"));
 	var password = $("edit-newPassword").value;
 	var repeatedPassword = $("edit-repeatedPassword").value;
 
 	if (!(password && repeatedPassword)) {
 		showEle($("edit-blank-error"));
+		return;
+	}
+	if (password.length < 6) {
+		showEle($("edit-password-length-error"));
 		return;
 	}
 	if (password != repeatedPassword) {
@@ -382,20 +497,69 @@ const saveEditPassword = () => {
 		cus.account.password = CryptoJS.SHA256(password).toString();
 		await callBackAPI(url, PUT_METHOD, cus).then((res) => {
 			var cus = res.data;
-			var message = `Bạn đã thay đổi thông tin cá nhân.<br>
+			var message = `Bạn đã thay đổi mật khẩu.<br>
 				Mật khẩu mới của bạn là: <b>${repeatedPassword}</b>.
 			`;
-			sendEmail(CHANGE_INFO_SUBJECT_EMAIL, message, cus.info.email);
+			sendEmail(CHANGE_INFO_SUBJECT, message, cus.info.email);
 		});
 		alert(CHANGED_PASSWORD_NOTIFICATION);
 	});
 };
+//----------------------------------------------
+const showAllCoupon = () => {
+	const show = (couponArr) => {
+		for (var coupon of couponArr) {
+			$("list-coupons").innerHTML += `
+				<div class="card">
+                    <img src="img/coupon.png" class="card-img-top">
+                    <span class="coupon-percenteage position-absolute" style="top:6rem;right:3.5rem"><h1>${coupon.value*100}%</h1></span>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">${coupon.code}</h5>
+                        <p class="card-text">Mã giảm ${coupon.value*100}%</p>
+                    </div>
+                </div>
+			`;
+		}
+	}
 
-//--------------------------------------
+	var url = `${URL_API2}${COUPONS}`;
+	callBackAPI(url, GET_METHOD, null, show)
+}
+//----------------------------------------------
+const setAccount = async () => {
+	hideEle($("link-login"));
+	cusId = JSON.parse(window.localStorage.getItem(CUSTOMER_INFO_KEY));
+	var url = `${URL_API}${CUSTOMERS}${cusId}`;
+	await callBackAPI(url).then((res) => {
+		$("accDropdown").innerText = res.data.info.name;
+	});
+	showEle($("manage-account"));
+};
+
+const logout = () => {
+	showEle($("link-login"));
+	hideEle($("manage-account"));
+	window.localStorage.setItem(CUSTOMER_INFO_KEY, EMPTY);
+	alert(LOGOUT_NOTIFICATION);
+};
+
+//----------------------------------------------
+if (
+	window.localStorage.getItem(CUSTOMER_INFO_KEY) != EMPTY &&
+	window.localStorage.getItem(CUSTOMER_INFO_KEY) != null
+) {
+	setAccount();
+}
+showAllCoupon()
 showMenu();
 $("edit-oldPassword").addEventListener(DBCLICK_EVENT, convertPasswordText);
 $("edit-newPassword").addEventListener(DBCLICK_EVENT, convertPasswordText);
 $("edit-repeatedPassword").addEventListener(DBCLICK_EVENT, convertPasswordText);
-$('display-bill__modal').addEventListener(MODAL_HIDE_EVENT, (e) => {
+$("display-bill__modal").addEventListener(MODAL_HIDE_EVENT, () => {
 	tblBodyDBill.innerHTML = EMPTY;
 });
+$("history-detail__modal").addEventListener(MODAL_HIDE_EVENT, () => {
+	$("detailBill-tbl-body").innerHTML = EMPTY;
+});
+
+bill = cusId !== "undefined" ? new Bill(cusId) : null;

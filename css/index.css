@@ -55,9 +55,19 @@ input[type="tel"] {
 	position: absolute;
 	top: 0;
 }
-#link-login:hover,
+#link-login a:hover,
+
 #accDropdown:hover {
 	color: #ffab23 !important;
+}
+#list-coupons {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	row-gap: 2rem;
+	column-gap: 3rem
+}
+.coupon-percentage {
+	font-family:'Bebas Neue', cursive;
 }
 .product-types {
 	top: 2.5rem;
@@ -70,7 +80,7 @@ input[type="tel"] {
 	color: #fda71c;
 }
 .tab-btn {
-	color:  #fda71c;
+	color: #fda71c;
 	background-color: #252525;
 	font-weight: 600;
 	border: none;
@@ -90,14 +100,14 @@ input[type="tel"] {
 }
 .btn-menu {
 	background-color: transparent;
-	border: black solid 1px;
+	border: black solid 2px;
 	color: black;
 	padding: 5% 15%;
 	border-radius: 2rem;
 	width: max-content;
 }
 .btn-menu.active {
-	color: white !important;
+	font-weight: 700;
 	border: #ffab23 solid 2px;
 	background-color: #ffab23 !important;
 }
@@ -189,4 +199,11 @@ footer {
 #up-to-header:hover {
 	color: #ffab23 !important;
 	scroll-behavior: smooth;
+}
+.history-item {
+	border-bottom: 2px solid black;
+	margin-bottom: 5px;
+}
+.history-item a:hover {
+	color: #fda71c;
 }

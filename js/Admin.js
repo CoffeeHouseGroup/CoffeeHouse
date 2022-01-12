@@ -9,52 +9,49 @@ const COUPON_MATCHED_WARNING = "Mã giảm giá bị trùng! Vui lòng nhập m�
 const COUPON_VALUE_RANGE_WARNING = "Giá trị của mã phải trong khoảng 0 và 1!";
 const DELETE_COUPON_NOTIFICATION = "Xóa mã giảm giá thành công!";
 const DELETE_WARNING = "Bạn có chắc chắn muốn xóa?";
+const UPDATE_BILL_STATUS_NOTIFICATION = "Cập nhật trạng thái thành công!";
 const BANNED_ACCOUNT_NOTIFICATION = "Đã khóa tài khoản";
 const UNBANNED_ACCOUNT_NOTIFICATION = "Đã khóa tài khoản";
 const productModal = new bootstrap.Modal($("product__modal"));
 const customerModal = new bootstrap.Modal($("customer__modal"));
 const couponModal = new bootstrap.Modal($("coupon__modal"));
 
-//Categories section
-//----------------------------------------------
-const showCategories = async (ele) => {
-	const show = (cateArr) => {
-		for (var cate of cateArr) {
-			ele.innerHTML += `
-				<option value="${cate.id}">${cate.name}</option>
-			`;
-		}
-	};
-
-	ele.innerHTML = EMPTY;
-	var url = `${URL_API}${CATEGORIES}`;
-	await callBackAPI(url, GET_METHOD, null, show);
-};
 
 //Product section
 //-----------------------------------------------
 
-const showAllProduct = async () => {
+const showAllProduct = async (cateId = 0) => { // {0: all, 1: cà phê thế giới, 2: cà phê pha việt, 3: cà phê cẩm hứng, 4: đồ uống có cồn }
 	const show = (productArr) => {
-		assets[PRODUCT_ASSET_INDEX].data.push(productArr.length);
-		assets[PRODUCT_ASSET_INDEX].count += productArr.length;
 		for (var pro of productArr) {
 			addEleProTbl(pro);
 		}
 	};
-
-	var url = `${URL_API}${CATEGORIES}`;
-	await callBackAPI(url).then(async (res) => {
-		var cateArr = res.data;
-		assets[PRODUCT_ASSET_INDEX].labels = cateArr.map((cate) => {
-			return cate.name;
+	if (cateId == 0) {
+		var url = `${URL_API}${CATEGORIES}`;
+		await callBackAPI(url).then(async (res) => {
+			var cateArr = res.data;
+			assets[PRODUCT_ASSET_INDEX].labels = cateArr.map((cate) => {
+				return cate.name;
+			});
+			for (var cate of cateArr) {
+				var urlP = `${URL_API}${CATEGORIES}${cate.id}${PRODUCTS}`;
+				await callBackAPI(urlP).then(res => {
+					var productArr = res.data;
+					assets[PRODUCT_ASSET_INDEX].data.push(productArr.length);
+					assets[PRODUCT_ASSET_INDEX].count += productArr.length;
+					for (var pro of productArr) {
+						addEleProTbl(pro);
+					}
+				});
+			}
+			updateProductStatistic();
 		});
-		for (var cate of cateArr) {
-			var urlP = `${URL_API}${CATEGORIES}${cate.id}${PRODUCTS}`;
-			await callBackAPI(urlP, GET_METHOD, null, show);
-		}
-		updateProductStatistic();
-	});
+	}
+	else {
+		var url =  `${URL_API}${CATEGORIES}${cateId}${PRODUCTS}`
+		await callBackAPI(url, GET_METHOD, null, show);
+	}
+	
 };
 
 const resetProduct = () => {
@@ -64,7 +61,6 @@ const resetProduct = () => {
 	$("new-productDes").value = EMPTY;
 	$("new-productVotes").value = 5;
 	$("new-productBrand").value = EMPTY;
-	showCategories($("new-productCate"));
 };
 
 const createProduct = () => {
@@ -118,8 +114,7 @@ const delProduct = (cateId, id) => {
 };
 
 const showInfoProduct = (cateId, id) => {
-	const show = async (product) => {
-		await showCategories($("new-productCate"));
+	const show = (product) => {
 		$("product-title").innerText = EDIT_PRODUCT_TITLE;
 		$("new-productName").value = product.name;
 		$("new-productCate").value = product.CategoryId;
@@ -215,10 +210,6 @@ const showInfoCustomer = (id) => {
 
 	var url = `${URL_API}${CUSTOMERS}${id}`;
 	callBackAPI(url, GET_METHOD, null, show);
-	$("saveCustomer__btn").setAttribute(
-		ONCLICK_ATTR,
-		`saveEditCustomer(${id})`
-	);
 };
 
 const delCustomer = (id) => {
@@ -239,7 +230,8 @@ const ban = (id) => {
 			cus.account.status = !cus.account.status;
 			callBackAPI(url, PUT_METHOD, cus);
 			return cus;
-		}).then((cus) => {
+		})
+		.then((cus) => {
 			if (!cus.account.status) {
 				alert(
 					`${BANNED_ACCOUNT_NOTIFICATION} ${cus.account.userName}!`
@@ -326,17 +318,40 @@ const showInfoBill = (id) => {
 			});
 		});
 	};
+	const showStatus = (status) => {
+		if (status.isDelivering) {
+			$("isDelivering").setAttribute(DISABLED_ATTR, EMPTY);
+			$("isDelivering").setAttribute(CHECKED_ATTR, EMPTY);
+		} else {
+			$("isDelivering").setAttribute(
+				ONCLICK_ATTR,
+				`updateStatus(${id}, "${DELIVERING}")`
+			);
+		}
+		if (status.isReceived) {
+			$("isReceived").setAttribute(CHECKED_ATTR, EMPTY);
+		}
+		if (status.isPayed) {
+			$("isPayed").setAttribute(DISABLED_ATTR, EMPTY);
+			$("isPayed").setAttribute(CHECKED_ATTR, EMPTY);
+		} else {
+			$("isPayed").setAttribute(
+				ONCLICK_ATTR,
+				`updateStatus(${id}, "${PAYED}")`
+			);
+		}
+	};
 
-	$("detailBill-tbl-body").innerHTML = EMPTY;
 	var url = `${URL_API}${BILLS}${id}`;
 	callBackAPI(url).then((res) => {
 		var bill = res.data;
 		var detailArr = bill.details;
-
+		var status = bill.status;
 		var url = `${URL_API}${CUSTOMERS}${bill.cusId}`;
 		callBackAPI(url, GET_METHOD, null, showCusInfo);
 		showInfo(bill);
 		showAllDetail(detailArr);
+		showStatus(status);
 	});
 };
 const delBill = (id) => {
@@ -447,6 +462,32 @@ const preview = () => {
 	$("preview").classList.remove("visually-hidden");
 	$("preview-img").src = $("new-productImgLink").value;
 };
+const updateStatus = (id, key) => {
+	var url = `${URL_API}${BILLS}${id}`;
+	callBackAPI(url).then((res) => {
+		var bill = res.data;
+		switch (key) {
+			case DELIVERING: {
+				bill.status.isDelivering = true;
+				$("isDelivering").setAttribute(DISABLED_ATTR, EMPTY);
+				break;
+			}
+			case PAYED: {
+				$("isPayed").setAttribute(DISABLED_ATTR, EMPTY);
+				bill.status.isPayed = true;
+			}
+		}
+		callBackAPI(url, PUT_METHOD, bill).then(() => {
+			alert(UPDATE_BILL_STATUS_NOTIFICATION);
+		});
+	});
+};
+//---------------------filter--------------------------
+const filter = () => {
+	var cateId = $('filter-category').value
+	$("product-tbl-body").innerHTML = EMPTY;
+	showAllProduct(cateId)
+}
 //-----------------------------------------------------
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++
 const startShow = async () => {
@@ -457,4 +498,11 @@ const startShow = async () => {
 };
 
 startShow();
-//showAllProduct()
+$("bill__modal").addEventListener(MODAL_HIDE_EVENT, () => {
+	$("detailBill-tbl-body").innerHTML = EMPTY;
+	$("isDelivering").removeAttribute(DISABLED_ATTR);
+	$("isDelivering").removeAttribute(CHECKED_ATTR);
+	$("isReceived").removeAttribute(CHECKED_ATTR);
+	$("isPayed").removeAttribute(DISABLED_ATTR);
+	$("isPayed").removeAttribute(CHECKED_ATTR);
+})
