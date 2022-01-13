@@ -1,6 +1,7 @@
 const CREATE_PRODUCT_TITLE = "Thêm sản phẩm";
 const EDIT_PRODUCT_TITLE = "Chỉnh Sửa Thông Tin Sản Phẩm";
 const EDIT_PRODUCT_NOTIFICATION = "Chỉnh sửa sản phẩm thành công!";
+const CREATE_PRODUCT_NOTIFICATION = "Thêm mới sản phẩm thành công!";
 const DELETE_PRODUCT_NOTIFICATION = "Xoá sản phẩm thành công!";
 const DELETE_CUSTOMER_NOTIFICATION = "Xóa khách hàng thành công!";
 const DELETE_BILL_NOTIFICATION = "Xoá đơn hàng thành công!";
@@ -11,16 +12,16 @@ const DELETE_COUPON_NOTIFICATION = "Xóa mã giảm giá thành công!";
 const DELETE_WARNING = "Bạn có chắc chắn muốn xóa?";
 const UPDATE_BILL_STATUS_NOTIFICATION = "Cập nhật trạng thái thành công!";
 const BANNED_ACCOUNT_NOTIFICATION = "Đã khóa tài khoản";
-const UNBANNED_ACCOUNT_NOTIFICATION = "Đã khóa tài khoản";
+const UNBANNED_ACCOUNT_NOTIFICATION = "Đã mở khóa tài khoản";
 const productModal = new bootstrap.Modal($("product__modal"));
 const customerModal = new bootstrap.Modal($("customer__modal"));
 const couponModal = new bootstrap.Modal($("coupon__modal"));
 
-
 //Product section
 //-----------------------------------------------
 
-const showAllProduct = async (cateId = 0) => { // {0: all, 1: cà phê thế giới, 2: cà phê pha việt, 3: cà phê cẩm hứng, 4: đồ uống có cồn }
+const showAllProduct = async (cateId = 0) => {
+	// {0: all, 1: cà phê thế giới, 2: cà phê pha việt, 3: cà phê cẩm hứng, 4: đồ uống có cồn }
 	const show = (productArr) => {
 		for (var pro of productArr) {
 			addEleProTbl(pro);
@@ -35,7 +36,7 @@ const showAllProduct = async (cateId = 0) => { // {0: all, 1: cà phê thế gi�
 			});
 			for (var cate of cateArr) {
 				var urlP = `${URL_API}${CATEGORIES}${cate.id}${PRODUCTS}`;
-				await callBackAPI(urlP).then(res => {
+				await callBackAPI(urlP).then((res) => {
 					var productArr = res.data;
 					assets[PRODUCT_ASSET_INDEX].data.push(productArr.length);
 					assets[PRODUCT_ASSET_INDEX].count += productArr.length;
@@ -46,12 +47,10 @@ const showAllProduct = async (cateId = 0) => { // {0: all, 1: cà phê thế gi�
 			}
 			updateProductStatistic();
 		});
-	}
-	else {
-		var url =  `${URL_API}${CATEGORIES}${cateId}${PRODUCTS}`
+	} else {
+		var url = `${URL_API}${CATEGORIES}${cateId}${PRODUCTS}`;
 		await callBackAPI(url, GET_METHOD, null, show);
 	}
-	
 };
 
 const resetProduct = () => {
@@ -189,9 +188,16 @@ const addEleProTbl = (product) => {
 //---------------------------------------------------
 const showAllCustomer = async () => {
 	const show = (customerArr) => {
+		assets[CUSTOMER_ASSET_INDEX].count = customerArr.length;
+		assets[CUSTOMER_ASSET_INDEX].data = [...Array(12).fill(0)];
 		for (var cus of customerArr) {
 			addEleCusTbl(cus);
+			var date = new Date(cus.date);
+			if (date.getFullYear() == new Date().getFullYear()) {
+				assets[CUSTOMER_ASSET_INDEX].data[date.getMonth()]++;
+			}
 		}
+		updateCustomerStatistic();
 	};
 
 	var url = `${URL_API}${CUSTOMERS}`;
@@ -275,9 +281,25 @@ const addEleCusTbl = (customer) => {
 
 const showAllBill = async () => {
 	const show = (billArr) => {
+		assets[BILL_ASSET_INDEX].data = [...Array(12).fill(0)];
+		assets[BILL_ASSET_INDEX].revenue = 0;
+		var now = new Date();
 		for (var bill of billArr) {
 			addEleBillTbl(bill);
+			var date = new Date(bill.date);
+			if (date.getFullYear() == now.getFullYear()) {
+				if (date.getMonth() == now.getMonth()) {
+					assets[BILL_ASSET_INDEX].count++;
+					assets[BILL_ASSET_INDEX].revenue +=
+						bill.coupon != null
+							? bill.amount * (1 - bill.coupon.value)
+							: bill.amount;
+				}
+				assets[BILL_ASSET_INDEX].data[date.getMonth()]++;
+			}
 		}
+		updateBillStatistic()
+		updateRevenueStatistic()
 	};
 
 	var url = `${URL_API}${BILLS}`;
@@ -394,9 +416,11 @@ const addEleBillTbl = (bill) => {
 
 const showAllCoupon = async () => {
 	const show = (couponArr) => {
+		assets[COUPON_ASSET_INDEX].count = couponArr.length;
 		for (var coupon of couponArr) {
 			addEleCouponTbl(coupon);
 		}
+		updateCouponStatistic();
 	};
 
 	var url = `${URL_API2}${COUPONS}`;
@@ -484,10 +508,10 @@ const updateStatus = (id, key) => {
 };
 //---------------------filter--------------------------
 const filter = () => {
-	var cateId = $('filter-category').value
+	var cateId = $("filter-category").value;
 	$("product-tbl-body").innerHTML = EMPTY;
-	showAllProduct(cateId)
-}
+	showAllProduct(cateId);
+};
 //-----------------------------------------------------
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++
 const startShow = async () => {
@@ -505,4 +529,4 @@ $("bill__modal").addEventListener(MODAL_HIDE_EVENT, () => {
 	$("isReceived").removeAttribute(CHECKED_ATTR);
 	$("isPayed").removeAttribute(DISABLED_ATTR);
 	$("isPayed").removeAttribute(CHECKED_ATTR);
-})
+});

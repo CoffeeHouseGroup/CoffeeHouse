@@ -24,6 +24,7 @@ const nextToOTP = () => {
 		showEle($("blank-start-error"));
 		return;
 	}
+	hideEle($("blank-start-error"));
 	var url = `${URL_API}${CUSTOMERS}`;
 	callBackAPI(url).then((res) => {
 		var cusArr = res.data;
@@ -32,6 +33,7 @@ const nextToOTP = () => {
 				showEle($("email-registered-error"));
 				return;
 			}
+			hideEle($("email-registered-error"));
 		}
 		sendOTP();
 		aniStart.play();
@@ -50,6 +52,7 @@ const enterOTP = () => {
 };
 
 const register = async () => {
+	
 	var userName = $("new-username").value;
 	var phoneNumber = $("new-phoneNumber").value;
 	var address = $("new-address").value;
@@ -60,16 +63,18 @@ const register = async () => {
 		showEle($("blank-error"));
 		return;
 	}
+	hideEle($("blank-error"));
 	// check repeat password
 	if (password.length < 6) {
 		showEle($("password-length-error"));
 		return;
 	}
+	hideEle($("password-length-error"));
 	if (password != repeatedPassword) {
 		showEle($("password-repeated-error"));
 		return;
 	}
-
+	hideEle($("password-repeated-error"));
 	var url = `${URL_API}${CUSTOMERS}`;
 	await callBackAPI(url)
 		.then((res) => {

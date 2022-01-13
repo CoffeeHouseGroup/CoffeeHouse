@@ -12,7 +12,7 @@ const DELIVERING_STATUS_TEXT =
 const PAYED_STATUS_TEXT = "Đã thanh toán.";
 const MAKING_STATUS_TEXT = "Đang pha chế.";
 const RECEIVED_NOTIFICATION =
-	"Chúc quý khách đã nhận hàng. Hãy thưởng thức cà phê với tậm trạng tốt nhất nhé!";
+	"Chúc quý khách đã nhận hàng. Hãy thưởng thức cà phê với tâm trạng tốt nhất nhé!";
 const CHANGE_INFO_SUBJECT =
 	"[Coffee House][Chúc mừng bạn đã thay đổi thông tin cá nhân thành công!]";
 const BILL_CONFIRM_SUBJECT = "[Coffee House][Đơn hàng thành công!]";
@@ -421,10 +421,9 @@ const showInfo = () => {
 const saveEditInfo = () => {
 	hideEle($("blank-error-editInfo"));
 	var name = $("edit-cusName").value;
-	var email = $("edit-email").value;
 	var phone = $("edit-phoneNumber").value;
 	var address = $("edit-address").value;
-	if (!(name && email && phone && address)) {
+	if (!(name && phone && address)) {
 		showEle($("blank-error-editInfo"));
 		return;
 	}
@@ -432,7 +431,9 @@ const saveEditInfo = () => {
 	var url = `${URL_API}${CUSTOMERS}${cusId}`;
 	callBackAPI(url).then(async (res) => {
 		var cus = res.data;
-		cus.info = new Info(name, phone, email, address);
+		cus.info.name = name;
+		cus.info.phoneNumber = phone;
+		cus.info.address = address;
 		await callBackAPI(url, PUT_METHOD, cus).then((res) => {
 			var cus = res.data;
 			var message = `Bạn đã thay đổi thông tin cá nhân.<br>
@@ -484,7 +485,7 @@ const saveEditPassword = () => {
 		return;
 	}
 	if (password != repeatedPassword) {
-		showEle($("edit-repeatPasword-error"));
+		showEle($("edit-repeatPassword-error"));
 		return;
 	}
 	var check = confirm(CHANGE_PASWORD_WARNING);
@@ -512,19 +513,21 @@ const showAllCoupon = () => {
 			$("list-coupons").innerHTML += `
 				<div class="card">
                     <img src="img/coupon.png" class="card-img-top">
-                    <span class="coupon-percenteage position-absolute" style="top:6rem;right:3.5rem"><h1>${coupon.value*100}%</h1></span>
+                    <span class="coupon-percenteage position-absolute" style="top:6rem;right:3.5rem"><h1>${
+						coupon.value * 100
+					}%</h1></span>
                     <div class="card-body text-center">
                         <h5 class="card-title">${coupon.code}</h5>
-                        <p class="card-text">Mã giảm ${coupon.value*100}%</p>
+                        <p class="card-text">Mã giảm ${coupon.value * 100}%</p>
                     </div>
                 </div>
 			`;
 		}
-	}
+	};
 
 	var url = `${URL_API2}${COUPONS}`;
-	callBackAPI(url, GET_METHOD, null, show)
-}
+	callBackAPI(url, GET_METHOD, null, show);
+};
 //----------------------------------------------
 const setAccount = async () => {
 	hideEle($("link-login"));
@@ -550,7 +553,7 @@ if (
 ) {
 	setAccount();
 }
-showAllCoupon()
+showAllCoupon();
 showMenu();
 $("edit-oldPassword").addEventListener(DBCLICK_EVENT, convertPasswordText);
 $("edit-newPassword").addEventListener(DBCLICK_EVENT, convertPasswordText);
@@ -562,4 +565,4 @@ $("history-detail__modal").addEventListener(MODAL_HIDE_EVENT, () => {
 	$("detailBill-tbl-body").innerHTML = EMPTY;
 });
 
-bill = cusId !== "undefined" ? new Bill(cusId) : null;
+bill = cusId !== undefined ? new Bill(cusId) : null;
