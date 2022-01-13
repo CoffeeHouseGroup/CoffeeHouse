@@ -17,13 +17,9 @@ body {
 .container-all {
     height: 100vh;
 }
-/*#reg-img {
-    background-image: url(/img/bg-reg.jpg);
-    background-size: cover;
-}*/
 #OTP-section,
 #end-section {
-    background-image: url("/img/reg1-bg.jpg");
+    background-image: url(https://github.com/CoffeeHouseGroup/CoffeeHouse/blob/main/img/reg1-bg.jpg);
     background-size: cover;
 }
 #large-title {
