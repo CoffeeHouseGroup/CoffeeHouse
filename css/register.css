@@ -19,7 +19,7 @@ body {
 }
 #OTP-section,
 #end-section {
-    background-image: url(https://github.com/CoffeeHouseGroup/CoffeeHouse/blob/main/img/reg1-bg.jpg);
+    background-image: url(./img/reg1-bg.jpg);
     background-size: cover;
 }
 #large-title {
