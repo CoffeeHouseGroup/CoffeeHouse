@@ -1,0 +1,72 @@
+[
+    {
+        "cusId": "1",
+        "details": [
+            {
+                "url": "https://61bc10bed8542f0017824528.mockapi.io/Categories/1/Products/13",
+                "qty": 1
+            }
+        ],
+        "coupon": null,
+        "notes": "",
+        "payMethod": "0",
+        "address": "Da Nang",
+        "amount": 20000,
+        "date": "Fri Jan 14 2022 06:37:16 GMT+0700 (Indochina Time)",
+        "status": {
+            "isMaking": true,
+            "isDelivering": true,
+            "isReceived": true,
+            "isPayed": true
+        },
+        "id": "1"
+    },
+    {
+        "cusId": "1",
+        "details": [
+            {
+                "url": "https://61bc10bed8542f0017824528.mockapi.io/Categories/1/Products/9",
+                "qty": 1
+            }
+        ],
+        "coupon": null,
+        "notes": "",
+        "payMethod": "0",
+        "address": "Da Nang",
+        "amount": 20000,
+        "date": "Fri Jan 14 2022 06:37:29 GMT+0700 (Indochina Time)",
+        "status": {
+            "isMaking": true,
+            "isDelivering": true,
+            "isReceived": false,
+            "isPayed": false
+        },
+        "id": "2"
+    },
+    {
+        "cusId": "1",
+        "details": [
+            {
+                "url": "https://61bc10bed8542f0017824528.mockapi.io/Categories/3/Products/7",
+                "qty": 1
+            }
+        ],
+        "coupon": {
+            "code": "KYQN",
+            "value": 0.5,
+            "id": "3"
+        },
+        "notes": "",
+        "payMethod": "0",
+        "address": "Da Nang",
+        "amount": 20000,
+        "date": "Fri Jan 14 2022 06:37:49 GMT+0700 (Indochina Time)",
+        "status": {
+            "isMaking": true,
+            "isDelivering": false,
+            "isReceived": false,
+            "isPayed": false
+        },
+        "id": "3"
+    }
+]

@@ -1,0 +1,32 @@
+[
+    {
+        "code": "KYQN",
+        "value": 0.5,
+        "id": "3"
+    },
+    {
+        "code": "DEFG",
+        "value": 0.2,
+        "id": "8"
+    },
+    {
+        "code": "ASDFG ",
+        "value": 0.3,
+        "id": "9"
+    },
+    {
+        "code": "DCFR",
+        "value": 0.4,
+        "id": "10"
+    },
+    {
+        "code": "ABCD",
+        "value": 0.4,
+        "id": "12"
+    },
+    {
+        "code": "KYNE",
+        "value": 0.1,
+        "id": "13"
+    }
+]
